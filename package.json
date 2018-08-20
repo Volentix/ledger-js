@@ -1,0 +1,31 @@
+{
+  "name": "vlabs-ledger-js",
+  "version": "0.1.0",
+  "description": "A simple wrapper for eos.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Volentix/ledger-js.git"
+  },
+  "keywords": [
+    "eos",
+    "javascript"
+  ],
+  "author": "Volentix Labs Inc",
+  "license": "MIT",
+  "dependencies": {
+    "eosjs": "^16.0.3"
+  },
+  "bugs": {
+    "url": "https://github.com/Volentix/ledger-js/issues"
+  },
+  "homepage": "https://github.com/Volentix/ledger-js#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "request": "^2.88.0"
+  }
+}
