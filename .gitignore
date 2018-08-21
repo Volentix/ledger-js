@@ -1,1 +1,4 @@
 node_modules
+bx
+test/config.json
+out
