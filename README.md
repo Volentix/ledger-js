@@ -11,26 +11,54 @@ Javascript library for the Volentix ledger
 
 - [Install](#install)
 - [Usage](#usage)
-- [API](#api)
 - [Maintainers](#maintainers)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Install
 
+You must have access to an EOS instance running.
+
+**Config**
+
+In order to run the tests, you will need to first create a config.json file. Note that this file will remain on your local machine and never be uploaded into git.
+
+First you need to copy the template file with the following command:
+
 ```
+cp test/config.json.template test/config.json
+```
+
+The open up a text editor and modify the following values:
+
+| KEY                            | Description                               |
+|--------------------------------|-------------------------------------------|
+| REPLACE_THE_ID_OF_THE_CHAIN    | The chain id of your running instance     |
+| REPLACE_WITH_YOUR_KEY_PROVIDER | Your key provider                         |
+| REPLACE_WITH_HOST_URL          | The endpoint of your EOS running instance |
+
+
+**NPM**
+
+Install the dependancies.
+
+```
+npm install
+```
+
+**Run The Tests**
+
+You can run the tests with the following command.
+
+```
+npm run test
 ```
 
 ## Usage
 
-```
-```
+This project creates an NPM repository artifact.
 
-
-sed 's,cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f,'$CHAIN_ID',; s,5KfpCFGR8SBZ3At7oGTDcHgzXgCZRGV6hCT7DTfReYQ63gi3gQz,'$KEY_PROVIDER',; s,http://ec2-35-183-54-128.ca-central-1.compute.amazonaws.com:8888,'$HOST_URL',' test/config.json.template > test/con.json
-
-
-## API
+TODO: Show how to use it in HTML as well as in node....
 
 ## Maintainers
 

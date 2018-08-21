@@ -1,4 +1,5 @@
 node_modules
 bx
 test/config.json
-test/config.json.old
+test/config.json.old2
+.circleci/sed.txt
