@@ -1,7 +1,7 @@
 Eos = require('eosjs')
 
 let ledger = {};
-/*
+
 class Ledger {
     constructor(config) {
         this.ledger = Eos(config);
@@ -12,15 +12,20 @@ class Ledger {
             .then(test => test.rcrdtrf(
                 request.transfer, 
                 request.auth
-            )
-        );
+            ).catch(function (err) {
+                console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR")
+            })
+        ).then(function(data) { if(request.callback) {request.callback(data);}})
+        .catch(function (err) {
+            console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR + " + err)
+        })
     }
 }
 
 module.exports = Ledger;
 
- */
-exports.createLedger = function(chainid, keyprovider, httpendpoint, expire, broadcast, verbose, sign) {
+ /*
+module.exports.createLedger = function(chainid, keyprovider, httpendpoint, expire, broadcast, verbose, sign) {
 	config = {
   		'chainId': chainid,
   		'keyProvider': keyprovider,
@@ -33,7 +38,7 @@ exports.createLedger = function(chainid, keyprovider, httpendpoint, expire, broa
     ledger = Eos(config)
 }
 
-exports.callContract = function( contract, fromaccount, toaccount, fromkey, tokey, amount, authorization, datacallback){
+module.exports.callContract = function( contract, fromaccount, toaccount, fromkey, tokey, amount, authorization, datacallback){
     ledger.contract(contract).then(test1 => test1.rcrdtrf(
         {
             
@@ -50,3 +55,4 @@ exports.callContract = function( contract, fromaccount, toaccount, fromkey, toke
     ).catch()).then(function(data) { if(datacallback) {datacallback(data);}})
     
  }
+*/
