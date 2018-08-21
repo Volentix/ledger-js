@@ -25,7 +25,9 @@ Javascript library for the Volentix ledger
 
 ```
 ```
-docker run --rm --name eosio -d -p 8888:8888 -p 9876:9876 -v /tmp/work:/work -v /tmp/eosio/data:/mnt/dev/data -v /tmp/eosio/config:/mnt/dev/config eosio/eos-dev  /bin/bash -c "nodeos -e -p eosio --delete-all-blocks --plugin eosio::producer_plugin --plugin eosio::history_plugin --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin --plugin eosio::http_plugin -d /mnt/dev/data --config-dir /mnt/dev/config --http-server-address=0.0.0.0:8888 --access-control-allow-origin=* --contracts-console --http-validate-host=false"
+
+
+sed 's,cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f,'$CHAIN_ID',; s,5KfpCFGR8SBZ3At7oGTDcHgzXgCZRGV6hCT7DTfReYQ63gi3gQz,'$KEY_PROVIDER',; s,http://ec2-35-183-54-128.ca-central-1.compute.amazonaws.com:8888,'$HOST_URL',' test/config.json.template > test/con.json
 
 
 ## API

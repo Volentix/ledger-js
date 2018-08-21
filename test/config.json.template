@@ -1,0 +1,9 @@
+{
+    "chainId": "REPLACE_THE_ID_OF_THE_CHAIN",
+    "keyProvider": "REPLACE_WITH_YOUR_KEY_PROVIDER",
+    "httpEndpoint": "REPLACE_WITH_HOST_URL",
+    "expireInSeconds": 60,
+    "broadcast": true,
+    "verbose": true,
+    "sign": true
+}

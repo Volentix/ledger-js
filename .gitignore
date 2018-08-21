@@ -1,4 +1,4 @@
 node_modules
 bx
 test/config.json
-out
+test/config.json.old
