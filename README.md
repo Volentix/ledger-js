@@ -35,16 +35,15 @@ const ledger = new Ledger({
   ledgerAccount: "EOS8TJpbWeQEoaMZMZzmo4SqC7DUucEUHRQJs1x7cXLcTqRhiJ7VF"  // EOS account with the ledger contracts
 })
 
-const transactions = ledger.retrieveBalance({
+ledger.retrieveBalance({
   account: "EOS6Ew693sd741xNhBPGaa72cujaaMByyJ7UBpWR5c9QnCsVcRuP4",       // the ID of an account
   key: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"            // the public key of an EOS wallet
+}).then(transactions => {
+  // transaction data format TBD
+  transactions.forEach(transaction => {
+    console.log(transaction)
+  })
 })
-
-// transaction data format TBD
-transactions.forEach(transaction => {
-  console.log(transaction)
-})
-
 ```
 
 ## API
