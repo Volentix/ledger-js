@@ -9,13 +9,59 @@ TODO: Put more badges here.
 
 - [Install](#install)
 - [Usage](#usage)
+- [API](#api)
+- [Development](#development)
 - [Maintainers](#maintainers)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Install
 
-You must have access to an EOS instance running.
+First add the ledger client to your application:
+
+`npm add vlabs-ledger-js`
+
+You must have access to an EOS instance with the [Volentix Ledger](https://github.io/Volentix/ledger)
+contracts deployed. Please see that project for deployment of the contracts.
+
+## Usage
+
+```javascript
+import Ledger from "volentix-ledger-js";
+
+const ledger = new Ledger({
+  eosNode: "https://url-of-eos-node",                                     // URL of EOS node
+  chainId: "Ledger",                                                      // ID of a chain containing Volentix ledger
+  ledgerAccount: "EOS8TJpbWeQEoaMZMZzmo4SqC7DUucEUHRQJs1x7cXLcTqRhiJ7VF"  // EOS account with the ledger contracts
+})
+
+const transactions = ledger.retrieveBalance({
+  account: "EOS6Ew693sd741xNhBPGaa72cujaaMByyJ7UBpWR5c9QnCsVcRuP4",       // the ID of an account
+  key: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"            // the public key of an EOS wallet
+})
+
+// transaction data format TBD
+transactions.forEach(transaction => {
+  console.log(transaction)
+})
+
+```
+
+## API
+
+Each of these will be fully defined shortly.
+
+### `constructor`
+
+### `recordTransaction`
+
+### `retrieveBalance`
+
+### `retrieveTransactions`
+
+## Development
+
+### Testing
 
 **Config**
 
@@ -51,12 +97,6 @@ You can run the tests with the following command.
 ```
 npm run test
 ```
-
-## Usage
-
-This project creates an NPM repository artifact.
-
-TODO: Show how to use it in HTML as well as in node....
 
 ## Maintainers
 
