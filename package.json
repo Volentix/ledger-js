@@ -1,7 +1,7 @@
 {
   "name": "vlabs-ledger-js",
   "version": "0.1.0",
-  "description": "A simple wrapper for eos.js.",
+  "description": "A javascript client library for Volentix Ledger",
   "main": "app/ledger.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
