@@ -8,16 +8,15 @@ class Ledger {
     }
 
     callContract(request) {
+        console.log(JSON.stringify(request.transfer, null, 4))
         this.ledger.contract(request.transfer.s)
-            .then(test => test.rcrdtrf(
+            .then(test => test.rcrdtfr(
                 request.transfer, 
                 request.auth
-            ).catch(function (err) {
-                console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR")
-            })
-        ).then(function(data) { if(request.callback) {request.callback(data);}})
+            )
+        ).then(function(data) { if(request.callback) {request.callback(data, null);}})
         .catch(function (err) {
-            console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR + " + err)
+            request.callback(null, err);
         })
     }
 }
@@ -39,14 +38,14 @@ module.exports.createLedger = function(chainid, keyprovider, httpendpoint, expir
 }
 
 module.exports.callContract = function( contract, fromaccount, toaccount, fromkey, tokey, amount, authorization, datacallback){
-    ledger.contract(contract).then(test1 => test1.rcrdtrf(
+    ledger.contract(contract).then(test => test.rcrdtfr(
         {
             
         "s": contract,
-        "fromAccount": fromaccount,
-        "toAccount": toaccount,
-        "fromKey": fromkey,
-        "toKey": tokey,
+        "fromaccount": fromaccount,
+        "toaccount": toaccount,
+        "fromkey": fromkey,
+        "tokey": tokey,
         "amount": amount,
         },
         {
