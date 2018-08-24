@@ -1,57 +1,47 @@
 Eos = require('eosjs')
 
-let ledger = {};
-
 class Ledger {
     constructor(config) {
-        this.ledger = Eos(config);
+        this.LEDGER_ACCOUNT_NAME = "vltxledger1";
+        this.eos = Eos(config);
     }
 
-    callContract(request) {
-        console.log(JSON.stringify(request.transfer, null, 4))
-        this.ledger.contract(request.transfer.s)
-            .then(test => test.rcrdtfr(
-                request.transfer, 
-                request.auth
-            )
-        ).then(function(data) { if(request.callback) {request.callback(data, null);}})
-        .catch(function (err) {
-            request.callback(null, err);
-        })
+    async retrieveBalance({ account, key }) {
+        console.log("retrieveBalance");
+        const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
+        console.log("contract", contract);
+
+        return contract.getrcrd(account, key)
+    }
+
+    // recordTransfer({
+    //     from: {
+    //         account: "vltxdistrib"
+    //     },
+    //     to: {
+    //         account: "vltxtrust11",
+    //         key: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
+    //     },
+    //     amount: 123.45
+    // })
+    //
+    // Returns: Promise
+    async recordTransfer({ from, to, amount }) {
+        console.log("recordTransfer");
+        const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
+        console.log("contract", contract);
+
+        return contract.rcrdtfr(from.account, from.key, to.account, to.key, amount);
+    }
+
+    // Retrieve all transactions performed from / to this account & key
+    async retrieveTransactions({ account, key }) {
+        console.log('retrieveTransactions');
+        const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
+        console.log('contract', contract);
+
+        return contract.getrcrd(from.account, from.key, to.account, to.key);
     }
 }
 
 module.exports = Ledger;
-
- /*
-module.exports.createLedger = function(chainid, keyprovider, httpendpoint, expire, broadcast, verbose, sign) {
-	config = {
-  		'chainId': chainid,
-  		'keyProvider': keyprovider,
-  		'httpEndpoint': httpendpoint,
-  		'expireInSeconds': expire,
-  		'broadcast': broadcast,
-  		'verbose': verbose,
-  		'sign': sign,
-    }
-    ledger = Eos(config)
-}
-
-module.exports.callContract = function( contract, fromaccount, toaccount, fromkey, tokey, amount, authorization, datacallback){
-    ledger.contract(contract).then(test => test.rcrdtfr(
-        {
-            
-        "s": contract,
-        "fromaccount": fromaccount,
-        "toaccount": toaccount,
-        "fromkey": fromkey,
-        "tokey": tokey,
-        "amount": amount,
-        },
-        {
-            authorization: [ authorization ]
-        }
-    ).catch()).then(function(data) { if(datacallback) {datacallback(data);}})
-    
- }
-*/

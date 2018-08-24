@@ -1,9 +1,12 @@
-var expect    = require("chai").expect;
+const chai = require("chai");
+const chaiAsPromised = require("chai-as-promised");
+chai.use(chaiAsPromised);
+const expect = chai.expect;
 
 const VtxLedger  = require('../app/ledger')
 
-describe("Whatever", function() {
-    it("calls the contract and transfers funds", function(done) {
+describe("Ledger JS", function() {
+    it("retrieves a balance", function() {
 
         const config = {
             'chainId': 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
@@ -14,65 +17,12 @@ describe("Whatever", function() {
             'verbose': true,
             'sign': true,
         };
-        const request = {
-            "transfer": {
-                "s": "test",
-                "fromAccount": "Distribution",
-                "toAccount": "Trust",
-                "fromKey": 1234,
-                "toKey": 1234,
-                "amount": 100,
-            },
-            "auth": {
-                authorization: [ `test@active` ]
-            },
-            "callback": function(data, err) {
-                if (data) {
-                    console.log(JSON.stringify(data,null,4) );
-                    expect(1).to.equal(1);
-                } else {
-                    console.log();
-                    
-                    expect(1).to.equal(2);
-                }
-                done();
-            }
-        };
-        
+
         const ledger = new VtxLedger(config);
-        ledger.callContract(request);
-
-    /*     
-        VtxLedger.createLedger(
-            /* Chain id from the blockchain * /
-            'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f', 
-            /* Private key to the contract * /
-            '5KfpCFGR8SBZ3At7oGTDcHgzXgCZRGV6hCT7DTfReYQ63gi3gQz',
-            /* URL. * / 
-            'http://ec2-35-182-243-31.ca-central-1.compute.amazonaws.com:8888', 
-            60, 
-            true, 
-            true, 
-            true 
-        );
-
-        const datacallback = function(data) {
-            console.log(JSON.stringify(data,null,4) )
-            done();
-        }
-
-        VtxLedger.callContract(
-            "test", 
-            "Distribution", 
-            "Trust", 
-            1234, 
-            1234, 
-            1234,
-            `test@active`,
-            datacallback
-        );
-     */  
         
-    });
-    
+        return ledger.retrieveBalance({
+          account: "vltxtrust00",
+          key: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
+        }).should.eventually.equal(100)
+     });
 });
