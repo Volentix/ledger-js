@@ -8,8 +8,8 @@ const should = chai.should();
 const VtxLedger  = require('../app/ledger')
 
 describe("Ledger JS", function() {
-    const DISTRIBUTION_ACCOUNT = "vltxdistrib.";
-    const TRUST_ACCOUNT = "vltxtrust..";
+    const DISTRIBUTION_ACCOUNT = "vltxdistrib";
+    const TRUST_ACCOUNT = "vltxtrust";
     const TEST_PUBLIC_KEY = "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW";
     const TEST_AMOUNT = 100;
 
@@ -17,35 +17,39 @@ describe("Ledger JS", function() {
 
     before(function() {
         const config = {
+            'httpEndpoint': process.env.HTTP_ENDPOINT,
             'chainId': process.env.CHAIN_ID,
-            'keyProvider': process.env.KEY_PROVIDER,
-            'httpEndpoint': process.env.HTTP_ENDPOINT
+            'keyProvider': process.env.KEY_PROVIDER
         };
 
         ledger = new VtxLedger(config);
 
+        ledger.getBlock()
+
         return ledger.recordTransfer({
             from: {
-                account: DISTRIBUTION_ACCOUNT
+                account: DISTRIBUTION_ACCOUNT,
+                // key: 1234
             }, to: {
                 account: TRUST_ACCOUNT,
-                key: TEST_PUBLIC_KEY
+                // key: 5678
             },
             amount: TEST_AMOUNT
         })
+
     })
 
-    after(function() {
-        return ledger.recordTransfer({
-            from: {
-                account: TRUST_ACCOUNT,
-                key: TEST_PUBLIC_KEY
-            }, to: {
-                account: DISTRIBUTION_ACCOUNT
-            },
-            amount: TEST_AMOUNT
-        })
-    })
+    // after(function() {
+    //     return ledger.recordTransfer({
+    //         from: {
+    //             account: TRUST_ACCOUNT,
+    //             key: TEST_PUBLIC_KEY
+    //         }, to: {
+    //             account: DISTRIBUTION_ACCOUNT
+    //         },
+    //         amount: TEST_AMOUNT
+    //     })
+    // })
 
     it("retrieves a balance", function() {
         return ledger.retrieveBalance({
