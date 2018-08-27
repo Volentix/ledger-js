@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid/v4');
+
 class Ledger {
   constructor(config) {
   }
@@ -12,11 +14,11 @@ class Ledger {
 
   // recordTransfer({
   //     from: {
-  //         account: "vltxdistrib"
+  //         account: "vtxdistrib"
   //     },
   //     to: {
-  //         account: "vltxtrust11",
-  //         key: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
+  //         account: "vtxtrust11",
+  //         wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
   //     },
   //     amount: 123.45
   // })
@@ -29,18 +31,18 @@ class Ledger {
   }
 
   // Returns two transactions
-  async retrieveTransactions({ account, key }) {
+  async retrieveTransactions({ account, wallet }) {
     return new Promise({
       transactions: [ 
-        randomTransfer({ from: "vltxdistrib", to: { account, key } }), 
-        randomTransfer({ from: "vltxdistrib", to: { account, key } }) ]
+        randomTransfer({ from: "vtxdistrib", to: { account, wallet } }), 
+        randomTransfer({ from: "vtxdistrib", to: { account, wallet } }) ]
     })
   }
 }
 
 function randomTransfer({ from, to, amount }) {
   return {
-    id: (Math.random() * 100000).toString(),
+    id: uuidv4(),
     from,
     to,
     amount: amount ? amount : Math.random() * 10000,
