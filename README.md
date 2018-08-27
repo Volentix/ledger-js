@@ -73,6 +73,9 @@ const balance = await ledger.retrieveBalance({
 console.log(`You have ${balance.amount} ${balance.currency}`)
 ```
 
+Also available in the `test` directory is a `mock-ledger.js` which can be used for basic testing without needing
+to connect to a remote instance.
+
 ## API
 
 ### `constructor`
