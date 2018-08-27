@@ -6,7 +6,7 @@ class Ledger {
 
   async retrieveBalance({ account, key }) {
       console.log('retrieveBalance');
-      return new Promise({
+      return Promise.resolve({
         amount: 11.21,
         currency: "VTX"
       });
@@ -25,14 +25,14 @@ class Ledger {
   //
   // Returns: Promise
   async recordTransfer(transferDetails) {
-    return new Promise(
+    return Promise.resolve(
       randomTransfer(transferDetails)
     )
   }
 
   // Returns two transactions
   async retrieveTransactions({ account, wallet }) {
-    return new Promise({
+    return Promise.resolve({
       transactions: [ 
         randomTransfer({ from: "vtxdistrib", to: { account, wallet } }), 
         randomTransfer({ from: "vtxdistrib", to: { account, wallet } }) ]
