@@ -1,4 +1,5 @@
-const uuidv4 = require('uuid/v4');
+import uuidv4 from "uuid/v4";
+import moment from "moment";
 
 class Ledger {
   constructor(config) {
@@ -45,6 +46,7 @@ function randomTransfer({ from, to, amount }) {
     id: uuidv4(),
     from,
     to,
+    submittedAt: moment().format(),
     amount: amount ? amount : Math.random() * 10000,
     currency: "VTX"  
   }

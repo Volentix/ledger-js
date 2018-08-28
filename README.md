@@ -128,6 +128,7 @@ there may be other types of transactions
     - `wallet` (optional): The owner public key of the user's wallet
   - `amount`: The amount of funds transferred
   - `currency`: The currency used in this account / wallet
+  - `submittedAt`: The date and time that the transaction was submitted, in ISO 8601 format
 
 #### Example
 To retrieve all the transactions associated with a user's wallet
@@ -161,6 +162,7 @@ Data to pass in:
 Returns all of the given data, plus:
 - `id`: The unique ID of the transfer
 - `currency`: The currency used in this account / wallet
+- `submittedAt`: The date and time that the transaction was submitted, in ISO 8601 format
 
 #### Example
 For this example, record a transfer from the distribution account to a user's wallet held
