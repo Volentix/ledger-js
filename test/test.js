@@ -24,37 +24,46 @@ describe("Ledger JS", function() {
 
         ledger = new VtxLedger(config);
 
-        ledger.getBlock()
-
         return ledger.recordTransfer({
             from: {
                 account: DISTRIBUTION_ACCOUNT,
-                // key: 1234
             }, to: {
                 account: TRUST_ACCOUNT,
-                // key: 5678
+                key: TEST_PUBLIC_KEY
             },
             amount: TEST_AMOUNT
         })
-
     })
 
-    // after(function() {
-    //     return ledger.recordTransfer({
-    //         from: {
-    //             account: TRUST_ACCOUNT,
-    //             key: TEST_PUBLIC_KEY
-    //         }, to: {
-    //             account: DISTRIBUTION_ACCOUNT
-    //         },
-    //         amount: TEST_AMOUNT
-    //     })
-    // })
+    after(function() {
+        return ledger.recordTransfer({
+            from: {
+                account: TRUST_ACCOUNT,
+                key: TEST_PUBLIC_KEY
+            }, to: {
+                account: DISTRIBUTION_ACCOUNT
+            },
+            amount: TEST_AMOUNT
+        })
+    })
 
     it("retrieves a balance", function() {
         return ledger.retrieveBalance({
           account: TRUST_ACCOUNT,
           key: TEST_PUBLIC_KEY
         }).should.eventually.equal(TEST_AMOUNT)
+     });
+
+     it("creates a transfer with key numbers", function() {
+        return ledger.recordTransfer({
+            from: {
+                account: DISTRIBUTION_ACCOUNT,
+                key: 1234
+            }, to: {
+                account: TRUST_ACCOUNT,
+                key: 5678
+            },
+        amount: TEST_AMOUNT
+        })
      });
 });
