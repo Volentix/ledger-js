@@ -174,7 +174,7 @@ const transfer = await recordTransfer({
     account: "vtxdistrib"
   },
   to: {
-    account: "vtxtrust11",
+    account: "vtxtrust",
     wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTb"
   },
   amount: 123.45
