@@ -49,7 +49,7 @@ class Ledger {
                 to,
                 amount,
                 id: transfer.processed.id,
-                currency: 'VTX', // Should be returned from server
+                currency: 'VTX', // TODO Should be returned from server
             }
         })
     }

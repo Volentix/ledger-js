@@ -91,4 +91,16 @@ describe("Ledger JS", function() {
             amount: TEST_AMOUNT
         })
     })
+
+    it.skip("creates a transfer from an account to a wallet and returns an ID", function() {
+        return ledger.recordTransfer({
+            from: {
+                account: DISTRIBUTION_ACCOUNT,
+            }, to: {
+                account: TRUST_ACCOUNT,
+                key: TEST_WALLET
+            },
+            amount: TEST_AMOUNT
+        }).should.eventually.have.property('id').that.is.a('string').that.has.lengthOf.at.least(64)
+    })  
 });
