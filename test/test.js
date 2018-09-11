@@ -28,7 +28,6 @@ describe("Ledger JS", function() {
         return ledger.recordTransfer({
             from: {
                 account: DISTRIBUTION_ACCOUNT,
-                key: "to_be_removed"
             }, to: {
                 account: TRUST_ACCOUNT,
                 key: TEST_WALLET
@@ -44,17 +43,19 @@ describe("Ledger JS", function() {
                 key: TEST_WALLET
             }, to: {
                 account: DISTRIBUTION_ACCOUNT,
-                key: "to_be_removed"
             },
             amount: TEST_AMOUNT
         })
     })
 
-    it.skip("retrieves a balance", function() {
+    it("retrieves a balance", function() {
         return ledger.retrieveBalance({
           account: TRUST_ACCOUNT,
           key: TEST_WALLET
-        }).should.eventually.equal(TEST_AMOUNT)
+        }).should.eventually.eq({
+            amount: TEST_AMOUNT,
+            currency: "VTX"
+        })
      });
 
      it("creates a transfer between wallets and returns an ID", function() {

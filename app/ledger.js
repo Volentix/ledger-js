@@ -9,6 +9,7 @@ class Ledger {
             expireInSeconds: 60,
             verbose: false,
             debug: false,
+            sign: true,
             authorization: this.LEDGER_ACCOUNT_NAME + "@active"
         }))
     }
@@ -16,10 +17,15 @@ class Ledger {
     async retrieveBalance({ account, key }) {
         const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
-        return contract.getrcrd({
+        return contract.getblnc({
+            account,
             tokey: key
-        })
+        }).then(output => output.processed.action_traces[0].console)
     }
+
+    // {
+    //     'authorization':['vtxledger@active']
+    // }    
 
     // recordTransfer({
     //     from: {
