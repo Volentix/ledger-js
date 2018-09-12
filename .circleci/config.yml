@@ -18,7 +18,8 @@ jobs:
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
           npm install
           TAG=v0.1.$CIRCLE_WORKFLOW_ID
-          npm publish --tag $TAG
+          sed -i -e 's/VERSION/'$TAG'/g' package.json
+          npm publish
       - save_cache:
           paths:
             - node_modules

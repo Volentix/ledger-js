@@ -1,6 +1,6 @@
 {
   "name": "vlabs-ledger-js",
-  "version": "0.1.0",
+  "version": "VERSION",
   "description": "A javascript client library for Volentix Ledger",
   "main": "app/ledger.js",
   "scripts": {
