@@ -28,10 +28,10 @@ Some terminology:
 
 - **Account**: Accounts are defined by EOS and identified by a 1-12 character name.
 - **Distribution account**: The account which holds tokens to be distributed. For VTX, this is `vtxdistrib`
-- **Trust account** A specific account which holds funds *in trust* for a user. By holding funds, users
-can earn VTX without requiring them to open an EOS account (at a cost of ~$10 each). For VTX, this is `vtxtrust`.
+- **Trust account** A specific account which holds funds _in trust_ for a user. By holding funds, users
+  can earn VTX without requiring them to open an EOS account (at a cost of ~$10 each). For VTX, this is `vtxtrust`.
 - **Wallet**: Users create EOS wallets (for example [Verto](https://github.com/Volentix/verto)) to uniquely
-identify the tokens that they are owed
+  identify the tokens that they are owed
 
 ## Table of Contents
 
@@ -47,7 +47,7 @@ identify the tokens that they are owed
 
 First add the ledger client to your application:
 
-`npm add vlabs-ledger-js`
+`npm add volentix-ledger`
 
 You must have access to an EOS instance with the [Volentix Ledger](https://github.io/Volentix/ledger)
 contracts deployed. Please see that project for deployment of the contracts.
@@ -55,22 +55,22 @@ contracts deployed. Please see that project for deployment of the contracts.
 ## Usage
 
 ```javascript
-import Ledger from "vlabs-ledger-js";
+import Ledger from "volentix-ledger";
 
 // Point to a specific instance of the Ledger
 const ledger = new Ledger({
-  httpEndpoint: "https://url-of-eos-node",                                     // URL of EOS node
-  chainId: "cf057bbfb72640471ff8a%90ba539c22df9f92470936cddc1ade0e2f2e7dc4f",  // ID of a chain containing Volentix ledger
-  keyProvider: "EOS8TJpbWeQEoaMZMZzmo4SqC7DUucEUHRQJs1x7cXLcTqRhiJ7VF"         // EOS account with the ledger contracts
-})
+  httpEndpoint: "https://url-of-eos-node", // URL of EOS node
+  chainId: "cf057bbfb72640471ff8a%90ba539c22df9f92470936cddc1ade0e2f2e7dc4f", // ID of a chain containing Volentix ledger
+  keyProvider: "EOS8TJpbWeQEoaMZMZzmo4SqC7DUucEUHRQJs1x7cXLcTqRhiJ7VF" // EOS account with the ledger contracts
+});
 
-// Retrieve the balance 
+// Retrieve the balance
 const balance = await ledger.retrieveBalance({
-  account: "vtxtrust",                                            // the ID of an account
+  account: "vtxtrust", // the ID of an account
   wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW" // the public key of an EOS wallet
-})
+});
 
-console.log(`You have ${balance.amount} ${balance.currency}`)
+console.log(`You have ${balance.amount} ${balance.currency}`);
 ```
 
 Also available in the `test` directory is a `mock-ledger.js` which can be used for basic testing without needing
@@ -83,6 +83,7 @@ to connect to a remote instance.
 The constructor parameters are the same as those described in [eosjs configuration](https://github.com/EOSIO/eosjs#configuration).
 
 You should pass at least these fields:
+
 - `httpEndpoint`: http or https location of a nodeosd server providing a chain API.
 - `chainId`: Unique ID for the blockchain you're connecting to.
 - `keyProvider`: The EOS account which contains the Ledger contracts.
@@ -92,24 +93,26 @@ You should pass at least these fields:
 Retrieve the balance of an account or wallet.
 
 #### Example
+
 To retrieve a user's balance held in the trust account:
 
 ```javascript
 const balance = await ledger.retrieveBalance({
-  account: "vtxtrust",                                            // the ID of an account
+  account: "vtxtrust", // the ID of an account
   wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW" // the public key of an EOS wallet
-})
+});
 
-console.log(`You have ${balance.amount} ${balance.currency}`)
+console.log(`You have ${balance.amount} ${balance.currency}`);
 ```
 
 or to retrieve the balance of the entire distribution account:
+
 ```javascript
 const balance = await ledger.retrieveBalance({
-  account: "vtxdistrib",                                          // the ID of an account
-})
+  account: "vtxdistrib" // the ID of an account
+});
 
-console.log(`You have ${balance.amount} ${balance.currency}`)
+console.log(`You have ${balance.amount} ${balance.currency}`);
 ```
 
 ### `retrieveTransactions`
@@ -131,26 +134,32 @@ there may be other types of transactions
   - `submittedAt`: The date and time that the transaction was submitted, in ISO 8601 format
 
 #### Example
+
 To retrieve all the transactions associated with a user's wallet
 
 ```javascript
 const transactions = await ledger.retrieveTransactions({
-  account: "vtxtrust",                                            // the ID of an account
+  account: "vtxtrust", // the ID of an account
   wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW" // the public key of an EOS wallet
-})
+});
 
 transactions.transactions.forEach(tx => {
-  console.log(`[ID: ${tx.id}] Found ${tx.type} from ${tx.from.account} to ${tx.to.account}`);
-  if (tx.from.wallet) console.log(`From wallet ${tx.from.wallet}`)
-  if (tx.to.wallet) console.log(`To wallet ${tx.to.wallet}`)
-})
+  console.log(
+    `[ID: ${tx.id}] Found ${tx.type} from ${tx.from.account} to ${
+      tx.to.account
+    }`
+  );
+  if (tx.from.wallet) console.log(`From wallet ${tx.from.wallet}`);
+  if (tx.to.wallet) console.log(`To wallet ${tx.to.wallet}`);
+});
 ```
 
 ### `recordTransfer`
 
-Add a transfer from one account / wallet to another. 
+Add a transfer from one account / wallet to another.
 
 Data to pass in:
+
 - `from`: The location to transfer funds from
   - `account`: The 1-12 character name of the EOS account to transfer funds FROM
   - `wallet` (optional): The owner public key of the user's wallet
@@ -160,11 +169,13 @@ Data to pass in:
 - `amount`: The amount of funds to transfer
 
 Returns all of the given data, plus:
+
 - `id`: The unique ID of the transfer
 - `currency`: The currency used in this account / wallet
 - `submittedAt`: The date and time that the transaction was submitted, in ISO 8601 format
 
 #### Example
+
 For this example, record a transfer from the distribution account to a user's wallet held
 in the trust account:
 
@@ -178,9 +189,13 @@ const transfer = await recordTransfer({
     wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTb"
   },
   amount: 123.45
-})
+});
 
-console.log(`Transfer of ${transfer.balance} ${transfer.currency} completed; ID: ${transfer.id}`)
+console.log(
+  `Transfer of ${transfer.balance} ${transfer.currency} completed; ID: ${
+    transfer.id
+  }`
+);
 ```
 
 ## Development
