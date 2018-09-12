@@ -1,17 +1,34 @@
 version: 2
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.9.1
 jobs:
   build:
-    docker:
-      - image: node:8-alpine
+    <<: *defaults 
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-
+          - v1-dependencies-
       - run: |
           npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
   deploy:
-    docker:
-      - image: node:8-alpine
+    <<: *defaults 
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/repo
       - run: |
             echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
             TAG=v0.1.$CIRCLE_WORKFLOW_ID
