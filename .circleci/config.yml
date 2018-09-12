@@ -16,6 +16,8 @@ jobs:
           - v1-dependencies-
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          ls
+          sed -i -e 's/VERSION/'$TAG'/g' package.json
           npm install
           TAG=v0.1.$CIRCLE_WORKFLOW_ID
           sed -i -e 's/VERSION/'$TAG'/g' package.json
