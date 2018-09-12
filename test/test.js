@@ -27,7 +27,7 @@ describe("Ledger JS", function() {
   });
 
   this.beforeEach(function() {
-    testAmount = Math.floor(Math.random() * 1000 + 1);
+    testAmount = Math.floor(Math.random() * 1000);
   });
 
   afterEach(async function() {
@@ -68,7 +68,7 @@ describe("Ledger JS", function() {
     console.log("Distribution account has " + distributionAccountBalance);
 
     // Transfer some random amount less than the wallet balance
-    const transferAmount = Math.floor(Math.random() * testWalletBalance + 1);
+    const transferAmount = Math.floor(Math.random() * testWalletBalance);
     console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
@@ -102,7 +102,7 @@ describe("Ledger JS", function() {
     console.log("Distribution account has " + distributionAccountBalance);
 
     // Transfer some random amount less than the wallet balance
-    const transferAmount = Math.floor(Math.random() * testWalletBalance + 1);
+    const transferAmount = Math.floor(Math.random() * testWalletBalance);
     console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
@@ -203,6 +203,17 @@ describe("Ledger JS", function() {
       .to.have.a.property("submittedAt")
       .that.is.a("string")
       .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
+  });
+
+  it("retrieves zero transactions from a new wallet", async function() {
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      key: uuid()
+    });
+
+    expect(transactions).to.deep.equal({
+      transactions: []
+    });
   });
 
   async function clearTestWallet() {

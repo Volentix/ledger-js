@@ -72,11 +72,18 @@ class Ledger {
   }
 
   // Retrieve all transactions performed from / to this account & key
-  async retrieveTransactions({ account, key }) {
-    console.log("retrieveTransactions");
+  async retrieveTransactions({ account, key, limit }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
-    return contract.getrcrd(from.account, from.key, to.account, to.key);
+    const transactions = await contract.retrvtxns({
+      account,
+      tokey: key ? key : "",
+      limit: limit ? limit : 10
+    });
+
+    return {
+      transactions: []
+    };
   }
 }
 
