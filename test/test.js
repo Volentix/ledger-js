@@ -39,7 +39,6 @@ describe("Ledger JS", function() {
       account: TRUST_ACCOUNT,
       key: uuid()
     });
-    console.log("balance", balance);
 
     expect(balance).to.deep.equal({
       amount: 0,
@@ -62,15 +61,15 @@ describe("Ledger JS", function() {
       .that.equals("VTX");
   });
 
-  it("Transfers funds from account to wallet", async function() {
+  it("transfers funds from account to wallet", async function() {
     const testWalletBalance = await getTestWalletBalance();
     console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
     console.log("Distribution account has " + distributionAccountBalance);
 
     // Transfer some random amount less than the wallet balance
-    const transferAmount =
-      testAmount - Math.floor(Math.random() * testWalletBalance + 1);
+    const transferAmount = Math.floor(Math.random() * testWalletBalance + 1);
+    console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
       from: {
@@ -96,15 +95,15 @@ describe("Ledger JS", function() {
     );
   });
 
-  it("Transfers funds from wallet to account", async function() {
+  it("transfers funds from wallet to account", async function() {
     const testWalletBalance = await getTestWalletBalance();
     console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
     console.log("Distribution account has " + distributionAccountBalance);
 
     // Transfer some random amount less than the wallet balance
-    const transferAmount =
-      testAmount - Math.floor(Math.random() * testWalletBalance + 1);
+    const transferAmount = Math.floor(Math.random() * testWalletBalance + 1);
+    console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
       from: {
@@ -142,7 +141,7 @@ describe("Ledger JS", function() {
       amount: testAmount
     });
 
-    expect(transfer).to.have.all.keys({
+    expect(transfer).to.include.keys({
       from: {
         account: TRUST_ACCOUNT,
         key: TEST_WALLET
@@ -165,7 +164,7 @@ describe("Ledger JS", function() {
     expect(transfer)
       .to.have.a.property("submittedAt")
       .that.is.a("string")
-      .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}\d{2}/);
+      .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
   });
 
   it("creates a transfer from an account to a wallet and returns proper parameters", async function() {
@@ -180,7 +179,7 @@ describe("Ledger JS", function() {
       amount: testAmount
     });
 
-    expect(transfer).to.have.all.keys({
+    expect(transfer).to.include.keys({
       from: {
         account: DISTRIBUTION_ACCOUNT
       },
@@ -203,7 +202,7 @@ describe("Ledger JS", function() {
     expect(transfer)
       .to.have.a.property("submittedAt")
       .that.is.a("string")
-      .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}\d{2}/);
+      .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
   });
 
   async function clearTestWallet() {
