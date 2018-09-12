@@ -2,20 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:4.8.2-jessie
-    working_directory: ~/repo
+      - image: node:8-alpine
     steps:
       - checkout
-      - run:
-          name: Update npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
-          name: Install npm wee
-          command: npm install
+      - run: |
+          npm install
     deploy:
       docker:
-        - image: circleci/node:4.8.2-jessie
-      working_directory: ~/repo
+        - image: node:8-alpine
       steps:
         - checkout
         - run: |
