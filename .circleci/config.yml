@@ -40,6 +40,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
+      - restore_cache:
+          keys:
+          - v1-dependencies-
+          - v1-dependencies-
       - run: |
             TAG=v0.1.$CIRCLE_WORKFLOW_ID
             npm publish --tag $TAG
