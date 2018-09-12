@@ -54,7 +54,7 @@ describe("Ledger JS", function() {
     expect(balance)
       .to.have.a.property("amount")
       .that.is.a("number")
-      .that.is.above(1000);
+      .that.is.above(1);
 
     expect(balance)
       .to.have.a.property("currency")
