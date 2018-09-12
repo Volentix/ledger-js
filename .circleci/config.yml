@@ -15,7 +15,7 @@ jobs:
           - v1-dependencies-
       - run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
-          TAG=v0.1.$CIRCLE_BUILD_NUM
+          TAG=v0.2.$CIRCLE_BUILD_NUM
           sed -i -e 's/VERSION/'$TAG'/g' package.json
           npm install
           npm publish
