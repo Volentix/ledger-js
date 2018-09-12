@@ -37,7 +37,7 @@ describe("Ledger JS", function() {
   it("retrieves a zero balance from a new wallet", async function() {
     const balance = await ledger.retrieveBalance({
       account: TRUST_ACCOUNT,
-      key: uuid()
+      wallet: uuid()
     });
 
     expect(balance).to.deep.equal({
@@ -77,7 +77,7 @@ describe("Ledger JS", function() {
       },
       to: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       amount: transferAmount
     });
@@ -108,7 +108,7 @@ describe("Ledger JS", function() {
     await ledger.recordTransfer({
       from: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       to: {
         account: DISTRIBUTION_ACCOUNT
@@ -133,7 +133,7 @@ describe("Ledger JS", function() {
     const transfer = await ledger.recordTransfer({
       from: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       to: {
         account: DISTRIBUTION_ACCOUNT
@@ -144,7 +144,7 @@ describe("Ledger JS", function() {
     expect(transfer).to.include.keys({
       from: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       to: {
         account: DISTRIBUTION_ACCOUNT
@@ -174,7 +174,7 @@ describe("Ledger JS", function() {
       },
       to: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       amount: testAmount
     });
@@ -185,7 +185,7 @@ describe("Ledger JS", function() {
       },
       to: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       amount: testAmount
     });
@@ -208,7 +208,7 @@ describe("Ledger JS", function() {
   it("retrieves zero transactions from a new wallet", async function() {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
-      key: uuid()
+      wallet: uuid()
     });
 
     expect(transactions).to.deep.equal({
@@ -219,7 +219,7 @@ describe("Ledger JS", function() {
   it("retrieves 1 transaction from a wallet", async function() {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
-      key: TEST_WALLET,
+      wallet: TEST_WALLET,
       limit: 1
     });
 
@@ -233,7 +233,7 @@ describe("Ledger JS", function() {
     // Move any balance from the trust account back to the distribution account
     const balance = await ledger.retrieveBalance({
       account: TRUST_ACCOUNT,
-      key: TEST_WALLET
+      wallet: TEST_WALLET
     });
 
     if (balance.amount === 0) {
@@ -244,7 +244,7 @@ describe("Ledger JS", function() {
     return ledger.recordTransfer({
       from: {
         account: TRUST_ACCOUNT,
-        key: TEST_WALLET
+        wallet: TEST_WALLET
       },
       to: {
         account: DISTRIBUTION_ACCOUNT
@@ -256,7 +256,7 @@ describe("Ledger JS", function() {
   async function getTestWalletBalance() {
     const balance = await ledger.retrieveBalance({
       account: TRUST_ACCOUNT,
-      key: TEST_WALLET
+      wallet: TEST_WALLET
     });
 
     return balance.amount;

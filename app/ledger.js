@@ -18,13 +18,14 @@ class Ledger {
     );
   }
 
-  async retrieveBalance({ account, key }) {
+  async retrieveBalance({ account, wallet }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
     const balance = await contract.getblnc({
       account,
-      tokey: key ? key : ""
+      tokey: wallet ? wallet : ""
     });
+    // console.log("retrieveBalance: ", JSON.stringify(balance, null, 2));
 
     return JSON.parse(
       balance.processed.action_traces[0].console.replace(/'/g, '"')
@@ -41,7 +42,7 @@ class Ledger {
   //     },
   //     to: {
   //         account: "vtxtrust",
-  //         key: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
+  //         wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
   //     },
   //     amount: 123.45
   // })
@@ -56,8 +57,8 @@ class Ledger {
       s: this.TREASURY_ACCOUNT_NAME,
       fromaccount: from.account,
       toaccount: to.account,
-      fromkey: from.key ? from.key : "",
-      tokey: to.key ? to.key : "",
+      fromkey: from.wallet ? from.wallet : "",
+      tokey: to.wallet ? to.wallet : "",
       amount
     });
 
@@ -71,15 +72,19 @@ class Ledger {
     };
   }
 
-  // Retrieve all transactions performed from / to this account & key
-  async retrieveTransactions({ account, key, limit }) {
+  // Retrieve all transactions performed from / to this account & wallet
+  async retrieveTransactions({ account, wallet, limit }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
     const transactions = await contract.retrvtxns({
       account,
-      tokey: key ? key : "",
+      tokey: wallet ? wallet : "",
       limit: limit ? limit : 10
     });
+    // console.log(
+    //   "retrieveTransactions: ",
+    //   JSON.stringify(transactions, null, 2)
+    // );
 
     return {
       transactions: []
