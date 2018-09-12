@@ -23,7 +23,7 @@ describe("Ledger JS", function() {
 
     ledger = new VtxLedger(config);
 
-    // return clearTestWallet();
+    return clearTestWallet();
   });
 
   this.beforeEach(function() {
