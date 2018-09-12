@@ -7,15 +7,15 @@ jobs:
       - checkout
       - run: |
           npm install
-    deploy:
-      docker:
-        - image: node:8-alpine
-      steps:
-        - checkout
-        - run: |
-              echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
-              TAG=v0.1.$CIRCLE_WORKFLOW_ID
-              npm publish --tag $TAG
+  deploy:
+    docker:
+      - image: node:8-alpine
+    steps:
+      - checkout
+      - run: |
+            echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+            TAG=v0.1.$CIRCLE_WORKFLOW_ID
+            npm publish --tag $TAG
 workflows:
   version: 2
   build_test_deploy:
