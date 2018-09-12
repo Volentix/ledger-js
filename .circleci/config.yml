@@ -6,55 +6,32 @@ defaults: &defaults
   docker:
     - image: circleci/node:8.9.1
 jobs:
-  setup:
+  build:
     <<: *defaults
     steps:
       - checkout
-      - run: |
-          echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
-      - persist_to_workspace:
-          root: ~/repo
-          paths: .
-
-  build:
-    <<: *defaults 
-    steps:
-      - attach_workspace:
-          at: ~/repo
       - restore_cache:
           keys:
           - v1-dependencies-
           - v1-dependencies-
       - run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
           npm install
+          TAG=v0.1.$CIRCLE_WORKFLOW_ID
+          npm publish --tag $TAG
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-
-
       - persist_to_workspace:
           root: ~/repo
           paths: .
-  deploy:
-    <<: *defaults 
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - restore_cache:
-          keys:
-          - v1-dependencies-
-          - v1-dependencies-
-      - run: |
-            TAG=v0.1.$CIRCLE_WORKFLOW_ID
-            npm publish --tag $TAG
 workflows:
   version: 2
-  build_test_deploy:
+  build_publish:
     jobs:
       - build
-      - deploy:
-          requires:
-            - build
           filters:
             branches:
               only: master
+          
