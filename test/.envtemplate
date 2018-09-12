@@ -1,0 +1,11 @@
+# The chain id of your running instance
+CHAIN_ID=ENV_CHAIN_ID
+
+# The EOS account which contains the Ledger contracts.
+KEY_PROVIDER=ENV_KEY_PROVIDER
+
+# http or https location of a nodeosd server providing a chain API.
+HTTP_ENDPOINT=ENV_HTTP_ENDPOINT
+
+http or https location of a nodeosd server providing the wallet API.
+WALLET_ENDPOINT=ENV_WALLET_ENDPOINT
