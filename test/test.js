@@ -216,6 +216,19 @@ describe("Ledger JS", function() {
     });
   });
 
+  it("retrieves 1 transaction from a wallet", async function() {
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      key: TEST_WALLET,
+      limit: 1
+    });
+
+    expect(transactions)
+      .to.have.property("transactions")
+      .which.is.an("array")
+      .lengthOf(1);
+  });
+
   async function clearTestWallet() {
     // Move any balance from the trust account back to the distribution account
     const balance = await ledger.retrieveBalance({
