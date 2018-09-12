@@ -3,3 +3,4 @@ test/config.json
 test/config.json.old
 .circleci/sed.txt
 .env
+.vscode
