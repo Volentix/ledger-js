@@ -33,10 +33,6 @@ class Ledger {
     );
   }
 
-  // {
-  //     'authorization':['vtxledger@active']
-  // }
-
   // recordTransfer({
   //     from: {
   //         account: "vtxdistrib"
@@ -63,6 +59,8 @@ class Ledger {
       amount
     });
 
+    // console.log("recordTransfer: ", JSON.stringify(transfer, null, 2));
+
     return {
       from,
       to,
@@ -82,6 +80,7 @@ class Ledger {
       tokey: wallet ? wallet : "",
       limit: limit ? limit : 10
     });
+
     // console.log(
     //   "retrieveTransactions: ",
     //   JSON.stringify(transactions, null, 2)
