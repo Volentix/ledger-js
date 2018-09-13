@@ -25,6 +25,7 @@ class Ledger {
       account,
       tokey: wallet ? wallet : ""
     });
+
     // console.log("retrieveBalance: ", JSON.stringify(balance, null, 2));
 
     return JSON.parse(

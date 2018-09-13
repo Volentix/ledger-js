@@ -66,8 +66,8 @@ describe("Ledger JS", function() {
     const distributionAccountBalance = await getDistributionAccountBalance();
     console.log("Distribution account has " + distributionAccountBalance);
 
-    // Transfer some random amount less than the distribution account balance
-    const transferAmount = getRandomInt(1, distributionAccountBalance);
+    // Transfer some random amount
+    const transferAmount = getRandomInt(1, 100);
     console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
@@ -100,8 +100,11 @@ describe("Ledger JS", function() {
     const distributionAccountBalance = await getDistributionAccountBalance();
     console.log("Distribution account has " + distributionAccountBalance);
 
-    // Transfer some random amount less than the wallet balance
-    const transferAmount = getRandomInt(1, testWalletBalance);
+    // Transfer some random amount
+    const transferAmount = getRandomInt(
+      1,
+      testWalletBalance > 100 ? 100 : testWalletBalance
+    );
     console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
