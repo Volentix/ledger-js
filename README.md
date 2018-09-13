@@ -49,7 +49,7 @@ First add the ledger client to your application:
 
 `npm add volentix-ledger`
 
-You must have access to an EOS instance with the [Volentix Ledger](https://github.io/Volentix/ledger)
+You must have access to an EOS instance with the [Volentix Ledger](https://github.com/Volentix/ledger)
 contracts deployed. Please see that project for deployment of the contracts.
 
 ## Usage
