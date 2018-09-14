@@ -95,10 +95,25 @@ describe("Ledger JS", function() {
   });
 
   it("transfers funds from wallet to account", async function() {
-    const testWalletBalance = await getTestWalletBalance();
+    let testWalletBalance = await getTestWalletBalance();
     console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
     console.log("Distribution account has " + distributionAccountBalance);
+
+    if (testWalletBalance <= 0) {
+      // transfer some VTX if there isn't any yet
+      await ledger.recordTransfer({
+        from: {
+          account: DISTRIBUTION_ACCOUNT
+        },
+        to: {
+          account: TRUST_ACCOUNT,
+          wallet: TEST_WALLET
+        },
+        amount: testAmount
+      });
+      testWalletBalance = testAmount;
+    }
 
     // Transfer some random amount
     const transferAmount = getRandomInt(
