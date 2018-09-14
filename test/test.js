@@ -50,14 +50,14 @@ describe("Ledger JS", function() {
   });
 
   it("transfers funds from account to wallet", async function() {
-    const testWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
     console.log("Distribution account has " + distributionAccountBalance);
+    const testWalletBalance = await getTestWalletBalance();
+    console.log("Test wallet has " + testWalletBalance);
 
     // Transfer some random amount
     const transferAmount = getRandomInt(1, 100);
-    console.log("Transferring " + transferAmount + " VTX");
+    console.log("Transferring " + transferAmount + " VTX from account");
 
     await ledger.recordTransfer({
       from: {
@@ -110,7 +110,7 @@ describe("Ledger JS", function() {
       1,
       testWalletBalance > 100 ? 100 : testWalletBalance
     );
-    console.log("Transferring " + transferAmount + " VTX");
+    console.log("Transferring " + transferAmount + " VTX from wallet");
 
     await ledger.recordTransfer({
       from: {
