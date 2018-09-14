@@ -165,6 +165,7 @@ describe("Ledger JS", function() {
   });
 
   it("creates a transfer from a wallet to an account and returns proper parameters", async function() {
+    const testAmount = getRandomInt(1, 100);
     const transfer = await ledger.recordTransfer({
       from: {
         account: TRUST_ACCOUNT,
@@ -203,6 +204,7 @@ describe("Ledger JS", function() {
   });
 
   it("creates a transfer from an account to a wallet and returns proper parameters", async function() {
+    const testAmount = getRandomInt(1, 100);
     const transfer = await ledger.recordTransfer({
       from: {
         account: DISTRIBUTION_ACCOUNT
