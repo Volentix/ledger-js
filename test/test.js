@@ -6,6 +6,8 @@ const uuid = require("uuid");
 const VtxLedger = require("../app/ledger");
 
 describe("Ledger JS", function() {
+  this.timeout(5000);
+
   const DISTRIBUTION_ACCOUNT = "vtxdistrib";
   const TRUST_ACCOUNT = "vtxtrust";
   const TEST_WALLET = "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW";
