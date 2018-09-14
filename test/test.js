@@ -29,10 +29,6 @@ describe("Ledger JS", function() {
     testAmount = getRandomInt(1, 1000);
   });
 
-  afterEach(async function() {
-    return clearTestWallet();
-  });
-
   it("retrieves a zero balance from a new wallet", async function() {
     const balance = await ledger.retrieveBalance({
       account: TRUST_ACCOUNT,
