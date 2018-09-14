@@ -21,8 +21,6 @@ describe("Ledger JS", function() {
     };
 
     ledger = new VtxLedger(config);
-
-    return clearTestWallet();
   });
 
   this.beforeEach(function() {
@@ -49,7 +47,7 @@ describe("Ledger JS", function() {
     expect(balance)
       .to.have.a.property("amount")
       .that.is.a("number")
-      .that.is.above(1);
+      .that.is.above(100);
 
     expect(balance)
       .to.have.a.property("currency")
@@ -63,8 +61,7 @@ describe("Ledger JS", function() {
     console.log("Distribution account has " + distributionAccountBalance);
 
     // Transfer some random amount
-    const transferAmount = getRandomInt(1, 100);
-    console.log("Transferring " + transferAmount + " VTX");
+    console.log("Transferring " + testAmount + " VTX");
 
     await ledger.recordTransfer({
       from: {
@@ -74,7 +71,7 @@ describe("Ledger JS", function() {
         account: TRUST_ACCOUNT,
         wallet: TEST_WALLET
       },
-      amount: transferAmount
+      amount: testAmount
     });
 
     const newTestWalletBalance = await getTestWalletBalance();
@@ -84,9 +81,9 @@ describe("Ledger JS", function() {
       "Distribution account now has " + newDistributionAccountBalance
     );
 
-    expect(newTestWalletBalance).to.equal(testWalletBalance + transferAmount);
+    expect(newTestWalletBalance).to.equal(testWalletBalance + testAmount);
     expect(newDistributionAccountBalance).to.equal(
-      distributionAccountBalance - transferAmount
+      distributionAccountBalance - testAmount
     );
   });
 
