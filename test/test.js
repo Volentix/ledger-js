@@ -160,9 +160,7 @@ describe("Ledger JS", function() {
 
       expect.fail("", "", "Expected transfer to fail");
     } catch (e) {
-      if (e.name === "AssertionError") {
-        throw e;
-      }
+      expect(e.name).to.equal("insufficient_funds");
     }
   });
 
