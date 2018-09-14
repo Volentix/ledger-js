@@ -96,19 +96,20 @@ class Ledger {
   async retrieveTransactions({ account, wallet, limit }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
-    const transactions = await contract.retrvtxns({
+    const output = await contract.retrvtxns({
       account,
       tokey: wallet ? wallet : "",
       limit: limit ? limit : 10
     });
 
-    // console.log(
-    //   "retrieveTransactions: ",
-    //   JSON.stringify(transactions, null, 2)
-    // );
+    // console.log("retrieveTransactions: ", JSON.stringify(output, null, 2));
+
+    const transactions = JSON.parse(
+      output.processed.action_traces[0].console.replace(/'/g, '"')
+    );
 
     return {
-      transactions: []
+      transactions
     };
   }
 }

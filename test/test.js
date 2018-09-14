@@ -253,7 +253,104 @@ describe("Ledger JS", function() {
     });
   });
 
-  it("retrieves 1 transaction from a wallet", async function() {
+  it("retrieves 1 transaction from a wallet with only 1 transaction", async function() {
+    const testAmount = getRandomInt(1, 100);
+    const newTestWallet = uuid();
+    await ledger.recordTransfer({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      amount: testAmount
+    });
+
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: newTestWallet
+    });
+
+    expect(transactions)
+      .to.have.property("transactions")
+      .which.is.an("array")
+      .lengthOf(1);
+
+    const transaction = transactions.transactions[0];
+    expect(transaction).to.equal({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      amount: testAmount
+    });
+  });
+
+  it("retrieves 2 transaction from a wallet with only 2 transaction", async function() {
+    const testAmount = getRandomInt(1, 100);
+    const testAmount2 = getRandomInt(101, 150);
+    const newTestWallet = uuid();
+
+    await ledger.recordTransfer({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      amount: testAmount
+    });
+
+    await ledger.recordTransfer({
+      from: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      to: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      amount: testAmount2
+    });
+
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: newTestWallet
+    });
+
+    expect(transactions)
+      .to.have.property("transactions")
+      .which.is.an("array")
+      .lengthOf(2);
+
+    expect(transactions.transactions[0]).to.equal({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      amount: testAmount
+    });
+
+    expect(transactions.transactions[1]).to.equal({
+      from: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      to: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      amount: testAmount2
+    });
+  });
+
+  it("retrieves 1 transaction from a wallet when requesting only 1", async function() {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
       wallet: TEST_WALLET,
@@ -264,6 +361,19 @@ describe("Ledger JS", function() {
       .to.have.property("transactions")
       .which.is.an("array")
       .lengthOf(1);
+  });
+
+  it("retrieves 2 transactions from a wallet when requesting only 2", async function() {
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: TEST_WALLET,
+      limit: 2
+    });
+
+    expect(transactions)
+      .to.have.property("transactions")
+      .which.is.an("array")
+      .lengthOf(2);
   });
 
   async function clearTestWallet() {
