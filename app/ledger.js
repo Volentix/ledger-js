@@ -47,7 +47,7 @@ class Ledger {
   // })
   //
   // Returns: Promise
-  async recordTransfer({ from, to, amount }) {
+  async recordTransfer({ from, to, amount, comment }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
     const submittedAt = new Date();
@@ -59,7 +59,8 @@ class Ledger {
         toaccount: to.account,
         fromkey: from.wallet ? from.wallet : "",
         tokey: to.wallet ? to.wallet : "",
-        amount
+        amount,
+        comment: comment ? comment : ""
       });
 
       // console.log("recordTransfer: ", JSON.stringify(transfer, null, 2));
@@ -70,7 +71,8 @@ class Ledger {
         amount,
         submittedAt: moment(submittedAt).format(),
         id: transfer.processed.id,
-        currency: "VTX" // TODO Should be returned from server
+        currency: "VTX", // TODO Should be returned from server
+        comment
       };
     } catch (eStr) {
       const e = JSON.parse(eStr);
