@@ -164,7 +164,7 @@ describe("Ledger JS", function() {
     }
   });
 
-  it("creates a transfer from a wallet to an account and returns proper parameters", async function() {
+  it("creates a transfer from a wallet to an account and returns sent parameters", async function() {
     const testAmount = getRandomInt(1, 100);
     const transfer = await ledger.recordTransfer({
       from: {
@@ -203,7 +203,7 @@ describe("Ledger JS", function() {
       .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
   });
 
-  it("creates a transfer from an account to a wallet and returns proper parameters", async function() {
+  it("creates a transfer from an account to a wallet and returns sent parameters", async function() {
     const testAmount = getRandomInt(1, 100);
     const transfer = await ledger.recordTransfer({
       from: {
@@ -240,6 +240,24 @@ describe("Ledger JS", function() {
       .to.have.a.property("submittedAt")
       .that.is.a("string")
       .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
+  });
+
+  it("creates a transfer with comment field", async function() {
+    const testAmount = getRandomInt(1, 100);
+    const testComment = "A test comment";
+    const transfer = await ledger.recordTransfer({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: TEST_WALLET
+      },
+      amount: testAmount,
+      comment: testComment
+    });
+
+    expect(transfer.comment).to.equal(testComment);
   });
 
   it("retrieves zero transactions from a new wallet", async function() {
@@ -290,7 +308,31 @@ describe("Ledger JS", function() {
     });
   });
 
-  it("retrieves 2 transaction from a wallet with only 2 transaction", async function() {
+  it("retrieves a transaction with a comment", async function() {
+    const testAmount = getRandomInt(1, 100);
+    const testComment = "a test comment";
+    const newTestWallet = uuid();
+    await ledger.recordTransfer({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      amount: testAmount,
+      comment: testComment
+    });
+
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: newTestWallet
+    });
+
+    expect(transactions.transactions[0].comment).to.equal(testComment);
+  });
+
+  it("retrieves 2 transactions from a wallet with only 2 transaction", async function() {
     const testAmount = getRandomInt(1, 100);
     const testAmount2 = getRandomInt(101, 150);
     const newTestWallet = uuid();
