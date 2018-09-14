@@ -11,7 +11,6 @@ describe("Ledger JS", function() {
   const TEST_WALLET = "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW";
 
   let ledger = {};
-  let testAmount = 0;
 
   before(function() {
     const config = {
@@ -21,10 +20,6 @@ describe("Ledger JS", function() {
     };
 
     ledger = new VtxLedger(config);
-  });
-
-  this.beforeEach(function() {
-    testAmount = getRandomInt(1, 1000);
   });
 
   it("retrieves a zero balance from a new wallet", async function() {
@@ -61,7 +56,8 @@ describe("Ledger JS", function() {
     console.log("Distribution account has " + distributionAccountBalance);
 
     // Transfer some random amount
-    console.log("Transferring " + testAmount + " VTX");
+    const transferAmount = getRandomInt(1, 100);
+    console.log("Transferring " + transferAmount + " VTX");
 
     await ledger.recordTransfer({
       from: {
@@ -71,7 +67,7 @@ describe("Ledger JS", function() {
         account: TRUST_ACCOUNT,
         wallet: TEST_WALLET
       },
-      amount: testAmount
+      amount: transferAmount
     });
 
     const newTestWalletBalance = await getTestWalletBalance();
@@ -81,9 +77,9 @@ describe("Ledger JS", function() {
       "Distribution account now has " + newDistributionAccountBalance
     );
 
-    expect(newTestWalletBalance).to.equal(testWalletBalance + testAmount);
+    expect(newTestWalletBalance).to.equal(testWalletBalance + transferAmount);
     expect(newDistributionAccountBalance).to.equal(
-      distributionAccountBalance - testAmount
+      distributionAccountBalance - transferAmount
     );
   });
 
@@ -94,6 +90,7 @@ describe("Ledger JS", function() {
     console.log("Distribution account has " + distributionAccountBalance);
 
     if (testWalletBalance <= 0) {
+      const newTestWalletBalance = getRandomInt(0, 1000);
       // transfer some VTX if there isn't any yet
       await ledger.recordTransfer({
         from: {
@@ -103,9 +100,9 @@ describe("Ledger JS", function() {
           account: TRUST_ACCOUNT,
           wallet: TEST_WALLET
         },
-        amount: testAmount
+        amount: newTestWalletBalance
       });
-      testWalletBalance = testAmount;
+      testWalletBalance = await getTestWalletBalance();
     }
 
     // Transfer some random amount
