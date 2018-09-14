@@ -132,6 +132,7 @@ there may be other types of transactions
   - `amount`: The amount of funds transferred
   - `currency`: The currency used in this account / wallet
   - `submittedAt`: The date and time that the transaction was submitted, in ISO 8601 format
+  - `comment`: Text supplied when transaction was performed
 
 #### Example
 
@@ -167,6 +168,7 @@ Data to pass in:
   - `account`: The 1-12 character name of the EOS account to transfer funds TO
   - `wallet` (optional): The owner public key of the user's wallet
 - `amount`: The amount of funds to transfer
+- `comment`: (optional) Text for details about the transfer
 
 Returns all of the given data, plus:
 
