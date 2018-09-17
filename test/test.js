@@ -140,11 +140,11 @@ describe("Ledger JS", function() {
 
   it("cannot transfer more funds than a wallet contains", async function() {
     const testWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet has " + testWalletBalance);
+    // console.log("Test wallet has " + testWalletBalance);
 
     // Transfer some random amount more than the wallet balance
     const transferAmount = testWalletBalance + getRandomInt(1, 100);
-    console.log("Transferring " + transferAmount + " VTX");
+    // console.log("Transferring " + transferAmount + " VTX");
 
     try {
       await ledger.recordTransfer({
