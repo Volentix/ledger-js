@@ -1,6 +1,7 @@
 Eos = require("eosjs");
 
 const moment = require("moment");
+const uuid = require("uuid");
 
 const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
@@ -24,6 +25,7 @@ class Ledger {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
     const balance = await contract.getblnc({
+      nonce: uuid(),
       account,
       tokey: wallet ? wallet : ""
     });
@@ -54,6 +56,7 @@ class Ledger {
 
     try {
       const transfer = await contract.rcrdtfr({
+        nonce: uuid(),
         s: this.TREASURY_ACCOUNT_NAME,
         fromaccount: from.account,
         toaccount: to.account,
@@ -99,6 +102,7 @@ class Ledger {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
     const output = await contract.retrvtxns({
+      nonce: uuid(),
       account,
       tokey: wallet ? wallet : "",
       limit: limit ? limit : 10
@@ -113,6 +117,8 @@ class Ledger {
     return {
       transactions
     };
+
+    vtxledger, vtxledger, entry;
   }
 }
 
