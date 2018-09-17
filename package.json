@@ -17,7 +17,9 @@
   "author": "Volentix Labs Inc",
   "license": "MIT",
   "dependencies": {
-    "eosjs": "^16.0.3"
+    "eosjs": "^16.0.3",
+    "moment": "^2.22.2",
+    "uuid": "^3.3.2"
   },
   "bugs": {
     "url": "https://github.com/Volentix/ledger-js/issues"
@@ -29,8 +31,6 @@
     "chai-as-promised": "^7.1.1",
     "dotenv": "^6.0.0",
     "mocha": "^5.2.0",
-    "moment": "^2.22.2",
-    "request": "^2.88.0",
-    "uuid": "^3.3.2"
+    "request": "^2.88.0"
   }
 }
