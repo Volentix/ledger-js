@@ -53,13 +53,13 @@ describe("Ledger JS", function() {
 
   it("transfers funds from account to wallet", async function() {
     const distributionAccountBalance = await getDistributionAccountBalance();
-    console.log("Distribution account has " + distributionAccountBalance);
+    // console.log("Distribution account has " + distributionAccountBalance);
     const testWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet has " + testWalletBalance);
+    // console.log("Test wallet has " + testWalletBalance);
 
     // Transfer some random amount
     const transferAmount = getRandomInt(1, 100);
-    console.log("Transferring " + transferAmount + " VTX from account");
+    // console.log("Transferring " + transferAmount + " VTX from account");
 
     await ledger.recordTransfer({
       from: {
@@ -73,11 +73,11 @@ describe("Ledger JS", function() {
     });
 
     const newTestWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet now has " + newTestWalletBalance);
+    // console.log("Test wallet now has " + newTestWalletBalance);
     const newDistributionAccountBalance = await getDistributionAccountBalance();
-    console.log(
-      "Distribution account now has " + newDistributionAccountBalance
-    );
+    // console.log(
+    //   "Distribution account now has " + newDistributionAccountBalance
+    // );
 
     expect(newTestWalletBalance).to.equal(testWalletBalance + transferAmount);
     expect(newDistributionAccountBalance).to.equal(
@@ -87,9 +87,9 @@ describe("Ledger JS", function() {
 
   it("transfers funds from wallet to account", async function() {
     let testWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet has " + testWalletBalance);
+    // console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
-    console.log("Distribution account has " + distributionAccountBalance);
+    // console.log("Distribution account has " + distributionAccountBalance);
 
     if (testWalletBalance <= 0) {
       const newTestWalletBalance = getRandomInt(0, 1000);
@@ -112,7 +112,7 @@ describe("Ledger JS", function() {
       1,
       testWalletBalance > 100 ? 100 : testWalletBalance
     );
-    console.log("Transferring " + transferAmount + " VTX from wallet");
+    // console.log("Transferring " + transferAmount + " VTX from wallet");
 
     await ledger.recordTransfer({
       from: {
@@ -126,11 +126,11 @@ describe("Ledger JS", function() {
     });
 
     const newTestWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet now has " + newTestWalletBalance);
+    // console.log("Test wallet now has " + newTestWalletBalance);
     const newDistributionAccountBalance = await getDistributionAccountBalance();
-    console.log(
-      "Distribution account now has " + newDistributionAccountBalance
-    );
+    // console.log(
+    //   "Distribution account now has " + newDistributionAccountBalance
+    // );
 
     expect(newTestWalletBalance).to.equal(testWalletBalance - transferAmount);
     expect(newDistributionAccountBalance).to.equal(
