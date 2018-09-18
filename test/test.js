@@ -332,6 +332,30 @@ describe("Ledger JS", function() {
     expect(transactions.transactions[0].comment).to.equal(testComment);
   });
 
+  it("retrieves a transaction with a block number", async function() {
+    const testAmount = getRandomInt(1, 100);
+    const newTestWallet = uuid();
+    await ledger.recordTransfer({
+      from: {
+        account: DISTRIBUTION_ACCOUNT
+      },
+      to: {
+        account: TRUST_ACCOUNT,
+        wallet: newTestWallet
+      },
+      amount: testAmount
+    });
+
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: newTestWallet
+    });
+
+    expect(transactions.transactions[0].blockNumber)
+      .to.be.a("number")
+      .which.is.greaterThan(1000);
+  });
+
   it("retrieves 2 transactions from a wallet with only 2 transaction", async function() {
     const testAmount = getRandomInt(1, 100);
     const testAmount2 = getRandomInt(101, 150);

@@ -123,6 +123,7 @@ there may be other types of transactions
 
 - `transactions`: A list of the transactions found
   - `id`: The ID of a transaction
+  - `blockNum`: The block number where the transaction was recorded
   - `from`: Where funds were transferred from
     - `account`: The 1-12 character name of the EOS account to transfer funds FROM
     - `wallet` (optional): The owner public key of the user's wallet
