@@ -7,12 +7,12 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
   constructor(config) {
-    this.LEDGER_ACCOUNT_NAME = "vtxledger";
+    this.LEDGER_ACCOUNT_NAME = "stdvtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
       Object.assign({}, config, {
-        expireInSeconds: 60,
+        expireInSeconds: 70,
         verbose: false,
         debug: false,
         sign: true,
@@ -20,7 +20,6 @@ class Ledger {
       })
     );
   }
-
   async retrieveBalance({ account, wallet }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
@@ -29,25 +28,11 @@ class Ledger {
       account,
       tokey: wallet ? wallet : ""
     });
-
-    // console.log("retrieveBalance: ", JSON.stringify(balance, null, 2));
-
     return JSON.parse(
       balance.processed.action_traces[0].console.replace(/'/g, '"')
     );
   }
 
-  // recordTransfer({
-  //     from: {
-  //         account: "vtxdistrib"
-  //     },
-  //     to: {
-  //         account: "vtxtrust",
-  //         wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
-  //     },
-  //     amount: 123.45
-  // })
-  //
   // Returns: Promise
   async recordTransfer({ from, to, amount, comment }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
@@ -96,27 +81,75 @@ class Ledger {
       throw e;
     }
   }
+
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
-   // const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
-    const output = await this.eos.getTableRows({
+    //const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
+
+    var capcon = require('capture-console');
+    var fs = require('fs');
+    Eos = require('eosjs')
+   
+    this.eos.getTableRows({
       code: 'stdvtxledger',
       scope: 'stdvtxledger',
       table: 'entry',
       json: true,
-    })
-   
-    // console.log("retrieveTransactions: ", JSON.stringify(output, null, 2));
+    }).then(function (res) {
+      //res = res.rows;
 
-    // const transactions = JSON.parse(
-    //   output.processed.action_traces[0].console.replace(/'/g, '"')
-    // );
+// p.key = ledger.available_primary_key();
+// 					p.Id = ledger.available_primary_key();
+// 					p.fromAccount = fromaccount;
+// 					p.toAccount = "";
+// 					p.sToKey = "";
+// 					p.fromKey = fromkey;
+// 					p.amount = negAmount;
+// 					p.comment = nonce;
+// 					p.nonce = nonce;
+
+
+    res = [
+  {
+    "fromAccount": "vtxdistrib",
+    "toAccount": "",
+    "sToKey": "", 
+    "fromKey": "",
+    "amount": 364000000,
+    "comment": "nonce4563273415",
+    "nonce": "nonce4563273415"
+  }
+]
+
+
+
+
+      // var  stdout = capcon.captureStdout(function scope() {
+      //   console.log(JSON.stringify(res, null, 4));
+      // });
+     
+    });
+   //"retrieveTransactions: ", JSON.stringify(stdout, null, 2)
+
+    const transactions = JSON.parse(
+      output.processed.action_traces[0].console.replace(/'/g, '"')
+    );
 
     return {
-      output
+    
+  {
+    "fromAccount": "vtxdistrib",
+    "toAccount": "",
+    "sToKey": "", 
+    "fromKey": "",
+    "amount": 364000000,
+    "comment": "nonce4563273415",
+    "nonce": "nonce4563273415"
+  }
+
     };
 
-    vtxledger, vtxledger, entry;
+    stdvtxledger, stdvtxledger, entry;
   }
 }
 
