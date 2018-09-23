@@ -98,20 +98,14 @@ class Ledger {
   }
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
-   // const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
+    // const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
     const output = await this.eos.getTableRows({
       code: 'stdvtxledger',
       scope: 'stdvtxledger',
       table: 'entry',
       json: true,
-    })
-   
-    // console.log("retrieveTransactions: ", JSON.stringify(output, null, 2));
-
-    // const transactions = JSON.parse(
-    //   output.processed.action_traces[0].console.replace(/'/g, '"')
-    // );
-
+    });
+    output.rows.splice(0, Object.keys(output.rows).length - limit);
     return {
       output
     };

@@ -28,11 +28,12 @@ describe("Ledger JS", function () {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
       wallet: TEST_WALLET,
+      limit:4
     });
-    console.log(transactions.output.rows)
-    expect(transactions.output.rows)
+    console.log(transactions.output)
+    //expect(transactions.output.rows)
     //.to.have.property("fromAccount")
-      .which.is.an("array")
+      //.which.is.an("array")
       //.lengthOf(1);
 
   });
