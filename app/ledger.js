@@ -99,15 +99,37 @@ class Ledger {
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
     // const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
-    const output = await this.eos.getTableRows({
+    var output = await this.eos.getTableRows({
       code: 'stdvtxledger',
       scope: 'stdvtxledger',
       table: 'entry',
       json: true,
     });
     output.rows.splice(0, Object.keys(output.rows).length - limit);
+     var output1 = []
+    
+    
+     for (var i = 0; i < Object.keys(output.rows).length; i++) {
+      if (wallet === "") {
+        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
+          output1.push(output.rows[i]);
+        }
+        if (output.rows[i].toAccount.localeCompare(account) == 0) {
+          output1.push(output.rows[i]);
+        }
+      }
+      else  {
+        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
+          output1.push(output.rows[i]);
+        }
+        if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
+          output1.push(output.rows[i]);
+        }
+      }
+     }
+
     return {
-      output
+      output1 
     };
 
     vtxledger, vtxledger, entry;

@@ -10,7 +10,7 @@ describe("Ledger JS", function () {
 
   const DISTRIBUTION_ACCOUNT = "vtxdistrib";
   const TRUST_ACCOUNT = "vtxtrust";
-  const TEST_WALLET = "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW";
+  const TEST_WALLET = "EOS62L2r4FqnCbHAspPS3KBByGa728G3UDYxGkTY15mad97M4JhzN";
 
   let ledger = {};
 
@@ -21,7 +21,7 @@ describe("Ledger JS", function () {
       keyProvider: process.env.KEY_PROVIDER
     };
 
-    ledger = new VtxLedger(config);
+    ledger = new VtxLedger(config); 
   });
 
    it("retreives transactions", async function () {
@@ -30,7 +30,7 @@ describe("Ledger JS", function () {
       wallet: TEST_WALLET,
       limit:4
     });
-    console.log(transactions.output)
+    console.log(transactions.output1)
     //expect(transactions.output.rows)
     //.to.have.property("fromAccount")
       //.which.is.an("array")
