@@ -22,33 +22,42 @@ class Ledger {
   }
 
   async retrieveBalance({ account, wallet }) {
-    const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
-
-    const balance = await contract.getblnc({
-      nonce: uuid(),
-      account,
-      tokey: wallet ? wallet : ""
+   
+    var output = await this.eos.getTableRows({
+      code: 'stdvtxledger',
+      scope: 'stdvtxledger',
+      table: 'entry',
+      json: true,
     });
+     var amount = 0; 
+     for (var i = 0; i < Object.keys(output.rows).length; i++) {
+      if (wallet === "") {
+        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
+          amount = amount + output.rows[i].amount;
+        }
+        if (output.rows[i].toAccount.localeCompare(account) == 0) {
+          amount = amount + output.rows[i].amount;
+        }
+      }
+      else  {
+        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
+          amount = amount + output.rows[i].amount;
+        }
+        if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
+          amount = amount + output.rows[i].amount;
+        }
+      }
+     }
 
-    // console.log("retrieveBalance: ", JSON.stringify(balance, null, 2));
+    return {
+      amount 
+    };
 
-    return JSON.parse(
-      balance.processed.action_traces[0].console.replace(/'/g, '"')
-    );
+    vtxledger, vtxledger, entry;
   }
+  
 
-  // recordTransfer({
-  //     from: {
-  //         account: "vtxdistrib"
-  //     },
-  //     to: {
-  //         account: "vtxtrust",
-  //         wallet: "EOS5vBqi8YSzFCeTv4weRTwBzVkGCY5PN5Hm1Gp3133m8g9MtHTbW"
-  //     },
-  //     amount: 123.45
-  // })
-  //
-  // Returns: Promise
+  
   async recordTransfer({ from, to, amount, comment }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
@@ -98,7 +107,6 @@ class Ledger {
   }
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
-    // const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
     var output = await this.eos.getTableRows({
       code: 'stdvtxledger',
       scope: 'stdvtxledger',

@@ -37,20 +37,24 @@ describe("Ledger JS", function () {
       //.lengthOf(1);
 
   });
+
+  it("retrieves a  balance from wallet", async function() {
+    const balance = await ledger.retrieveBalance({
+      account: TRUST_ACCOUNT,
+      wallet: TEST_WALLET
+    });
+    console.log(balance)
+    // expect(balance).to.deep.equal({
+    //   amount: 0,
+    //   currency: "VTX"
+    // });
+  });
+
+
 });
 
 
-  // it("retrieves a zero balance from a new wallet", async function() {
-  //   const balance = await ledger.retrieveBalance({
-  //     account: TRUST_ACCOUNT,
-  //     wallet: uuid()
-  //   });
-
-  //   expect(balance).to.deep.equal({
-  //     amount: 0,
-  //     currency: "VTX"
-  //   });
-  // });
+  
 
   // it("retrieves a balance from account", async function() {
   //   const balance = await ledger.retrieveBalance({
