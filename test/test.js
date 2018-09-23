@@ -28,27 +28,27 @@ describe("Ledger JS", function () {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
       wallet: TEST_WALLET,
-      limit:4
+      limit:10
     });
-    console.log(transactions.output1)
-    //expect(transactions.output.rows)
-    //.to.have.property("fromAccount")
-      //.which.is.an("array")
-      //.lengthOf(1);
+    console.log(transactions.output)
+    expect(transactions.output)
+    .to.have.property("rows")
+      .which.is.an("array")
+      .lengthOf(10);
 
   });
 
-  it("retrieves a  balance from wallet", async function() {
-    const balance = await ledger.retrieveBalance({
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    });
-    console.log(balance)
-    // expect(balance).to.deep.equal({
-    //   amount: 0,
-    //   currency: "VTX"
-    // });
-  });
+  // it("retrieves a  balance from wallet", async function() {
+  //   const balance = await ledger.retrieveBalance({
+  //     account: DISTRIBUTION_ACCOUNT,
+  //     wallet: ""
+  //   });
+  //   console.log(balance)
+  //   // expect(balance).to.deep.equal({
+  //   //   amount: 0,
+  //   //   currency: "VTX"
+  //   // });
+  // });
 
 
 });
