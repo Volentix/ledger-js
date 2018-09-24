@@ -7,7 +7,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
   constructor(config) {
-    this.LEDGER_ACCOUNT_NAME = "vtxledger";
+    this.LEDGER_ACCOUNT_NAME = "stdvtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -50,7 +50,8 @@ class Ledger {
      }
 
     return {
-      amount 
+      amount,
+      currency: "VTX"  
     };
 
     vtxledger, vtxledger, entry;
@@ -62,7 +63,6 @@ class Ledger {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
     const submittedAt = new Date();
-
     try {
       const transfer = await contract.rcrdtfr({
         nonce: uuid(),
@@ -74,9 +74,7 @@ class Ledger {
         amount,
         comment: comment ? comment : ""
       });
-
-      // console.log("recordTransfer: ", JSON.stringify(transfer, null, 2));
-
+      //console.log("recordTransfer: ", JSON.stringify(transfer, null, 2));
       return {
         from,
         to,
@@ -104,6 +102,7 @@ class Ledger {
 
       throw e;
     }
+
   }
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
@@ -112,11 +111,9 @@ class Ledger {
       scope: 'stdvtxledger',
       table: 'entry',
       json: true,
+      limit: 100000
     });
-    output.rows.splice(0, Object.keys(output.rows).length - limit);
-     var output1 = []
-    
-    
+    var output1 = []
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
       if (wallet === "") {
         if (output.rows[i].fromAccount.localeCompare(account) == 0) {
@@ -135,7 +132,7 @@ class Ledger {
         }
       }
      }
-
+    output1.splice(0, Object.keys(output1).length - limit); 
     return {
       output1 
     };
