@@ -33,27 +33,25 @@ class Ledger {
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
       if (wallet === "") {
         if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-          amount = amount + output.rows[i].amount;
+          amount += output.rows[i].amount;
         }
         if (output.rows[i].toAccount.localeCompare(account) == 0) {
-          amount = amount + output.rows[i].amount;
+          amount += output.rows[i].amount;
         }
       }
       else  {
         if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
-          amount = amount + output.rows[i].amount;
+          amount += output.rows[i].amount;
         }
         if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
-          amount = amount + output.rows[i].amount;
+          amount +=  output.rows[i].amount;
         }
       }
      }
-
     return {
       amount,
       currency: "VTX"  
     };
-
     vtxledger, vtxledger, entry;
   }
   
