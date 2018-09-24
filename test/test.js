@@ -53,6 +53,20 @@ describe("Ledger JS", function () {
       .that.equals("VTX");
   });
 /////////////////////////////////////////////////////
+  it("retrieves a  balance from wallet", async function () {
+    const newTestWallet = uuid();
+    const balance = await ledger.retrieveBalance({
+      account: DISTRIBUTION_ACCOUNT,
+      wallet: newTestWallet 
+    });
+
+    expect(balance).to.deep.equal({
+      amount: 0,
+      currency: "VTX"
+    });
+  });
+
+/////////////////////////////////////////////////////
   it("transfers funds from account to wallet", async function () {
 
     // Transfer some random amount
@@ -75,7 +89,7 @@ describe("Ledger JS", function () {
 /////////////////////////////////////////////////////
   it("transfers funds from wallet to account", async function () {
     let testWalletBalance = await getTestWalletBalance();
-    //console.log("Test wallet has " + testWalletBalance);
+    console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
     //console.log("Distribution account has " + distributionAccountBalance);
 
@@ -112,42 +126,13 @@ describe("Ledger JS", function () {
       to: {
         account: DISTRIBUTION_ACCOUNT
       },
-      amount: 200,
+      amount: transferAmount,
        nonce : "",
         comment : ""
 
     });
   });
-/////////////////////////////////////////////////////
-  // it("cannot transfer more funds than a wallet contains", async function () {
-  //    const testWalletBalance = await getTestWalletBalance();
-  //   // console.log("Test wallet has " + testWalletBalance);
-
-  //   // //Transfer some random amount more than the wallet balance
-  //    const transferAmount = testWalletBalance + getRandomInt(500, 10000);
-  //   // console.log("Transferring " + transferAmount + " VTX");
-
-  //    try {
-  //     await ledger.recordTransfer({
-  //       from: {
-  //         account: TRUST_ACCOUNT,
-  //         wallet: TEST_WALLET
-  //       },
-  //       to: {
-  //         account: DISTRIBUTION_ACCOUNT
-  //       },
-  //       amount: transferAmount
-  //     });
-
-  //     expect.fail("", "", "Expected transfer to fail");
-  //   } catch (e) {
-  //     if (e.name === "AssertionError") {
-  //       throw e;
-  //     }
-  //   }
-  // });
-/////////////////////////////////////////////////////
-
+///////////////////////////////////////////
   it("creates a transfer from a wallet to an account and returns proper parameters", async function () {
     const testAmount = getRandomInt(1, 100);
     const transfer = await ledger.recordTransfer({
@@ -225,7 +210,8 @@ describe("Ledger JS", function () {
       .that.is.a("string")
       .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
   });
-/////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////
   it("transfers funds from account to wallet", async function() {
   const distributionAccountBalance = await getDistributionAccountBalance();
   // console.log("Distribution account has " + distributionAccountBalance);
@@ -246,7 +232,7 @@ describe("Ledger JS", function () {
     },
     amount: transferAmount
   });
-  });
+});
 /////////////////////////////////////////////////////
   it("retrieves zero transactions from a new wallet", async function () {
     const transactions = await ledger.retrieveTransactions({
@@ -270,47 +256,6 @@ describe("Ledger JS", function () {
       .to.have.property("output1")
       .which.is.an("array")
       .lengthOf(1);
-  });
-/////////////////////////////////////////////////////
- it("transfers funds from wallet to account", async function () {
-    let testWalletBalance = await getTestWalletBalance();
-    //console.log("Test wallet has " + testWalletBalance);
-    const distributionAccountBalance = await getDistributionAccountBalance();
-    //console.log("Distribution account has " + distributionAccountBalance);
-
-    if (testWalletBalance <= 0) {
-      const newTestWalletBalance = getRandomInt(0, 1000);
-      // transfer some VTX if there isn't any yet
-      await ledger.recordTransfer({
-        from: {
-          account: DISTRIBUTION_ACCOUNT
-        },
-        to: {
-          account: TRUST_ACCOUNT,
-          wallet: TEST_WALLET
-        },
-        amount: newTestWalletBalance
-      });
-      testWalletBalance = await getTestWalletBalance();
-    }
-
-    //Transfer some random amount
-    const transferAmount = getRandomInt(
-      1,
-      testWalletBalance > 100 ? 100 : testWalletBalance
-    );
-    //console.log("Transferring " + transferAmount + " VTX from wallet");
-
-    await ledger.recordTransfer({
-      from: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      to: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      amount: 200,
-    });
   });
 /////////////////////////////////////////////////////
 it("creates a transfer from a wallet to an account and returns sent parameters", async function() {
@@ -495,35 +440,7 @@ it("retrieves 2 transactions from a wallet when requesting only 2", async functi
     .which.is.an("array")
     .lengthOf(2);
 });
-/////////////////////////////////////////////////////
-it("retrieves a balance from account", async function() {
-  const balance = await ledger.retrieveBalance({
-    account: DISTRIBUTION_ACCOUNT,
-    wallet : ""
-  });
 
-  expect(balance)
-    .to.have.a.property("amount")
-    .that.is.a("number")
-    .that.is.above(100);
-
-  expect(balance)
-    .to.have.a.property("currency")
-    .that.equals("VTX");
-});
-/////////////////////////////////////////////////////
-  it("retrieves a  balance from wallet", async function () {
-    const newTestWallet = uuid();
-    const balance = await ledger.retrieveBalance({
-      account: DISTRIBUTION_ACCOUNT,
-      wallet: newTestWallet 
-    });
-
-    expect(balance).to.deep.equal({
-      amount: 0,
-      currency: "VTX"
-    });
-  });
 
 
 /////////////////////////////////////////////////////
@@ -550,7 +467,7 @@ it("cannot transfer more funds than a wallet contains", async function() {
     //expect(e.name).to.equal("insufficient_funds");
   }
 });
-
+//TODO
 // it("retrieves a transaction with a block number", async function() {
 //   const testAmount = getRandomInt(1, 100);
 //   const newTestWallet = uuid();
@@ -574,12 +491,6 @@ it("cannot transfer more funds than a wallet contains", async function() {
 //     .to.be.a("number")
 //     .which.is.greaterThan(1000);
 // });
-
-
-
-
-
-
 
   async function getTestWalletBalance() {
     const balance = await ledger.retrieveBalance({
@@ -607,53 +518,6 @@ it("cannot transfer more funds than a wallet contains", async function() {
   };
 
 });
-
-
-//   const newTestWalletBalance = await getTestWalletBalance();
-//   console.log("Test wallet now has " + newTestWalletBalance);
-//   const newDistributionAccountBalance = await getDistributionAccountBalance();
-//   console.log(
-//     "Distribution account now has " + newDistributionAccountBalance
-//   );
-
-//   expect(newTestWalletBalance).to.equal(testWalletBalance - transferAmount);
-//   expect(newDistributionAccountBalance).to.equal(
-//     distributionAccountBalance + transferAmount
-//   );
-// });
-
-  // const newTestWalletBalance = await getTestWalletBalance();
-  // // console.log("Test wallet now has " + newTestWalletBalance);
-  // const newDistributionAccountBalance = await getDistributionAccountBalance();
-  // // console.log(
-  // //   "Distribution account now has " + newDistributionAccountBalance
-  // // );
-
-  // const newTestWalletBalance = await getTestWalletBalance();
-  // // console.log("Test wallet now has " + newTestWalletBalance);
-  // const newDistributionAccountBalance = await getDistributionAccountBalance();
-  // // console.log(
-  // //   "Distribution account now has " + newDistributionAccountBalance
-  // // );
-
-//   expect(newTestWalletBalance).to.equal(testWalletBalance + transferAmount);
-//   expect(newDistributionAccountBalance).to.equal(
-//     distributionAccountBalance - transferAmount
-//   );
-// });
-
-//   const newTestWalletBalance = await getTestWalletBalance();
-//   // console.log("Test wallet now has " + newTestWalletBalance);
-//   const newDistributionAccountBalance = await getDistributionAccountBalance();
-//   // console.log(
-//   //   "Distribution account now has " + newDistributionAccountBalance
-//   // );
-
-//   expect(newTestWalletBalance).to.equal(testWalletBalance - transferAmount);
-//   expect(newDistributionAccountBalance).to.equal(
-//     distributionAccountBalance + transferAmount
-//   );
-// });
 
 async function clearTestWallet() {
   // Move any balance from the trust account back to the distribution account
