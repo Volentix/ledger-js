@@ -75,9 +75,6 @@ describe("Ledger JS", function () {
   });
 
 
-
-
-
   it("transfers funds from wallet to account", async function () {
     // let testWalletBalance = await getTestWalletBalance();
     // console.log("Test wallet has " + testWalletBalance);
@@ -105,7 +102,7 @@ describe("Ledger JS", function () {
     //   1,
     //   testWalletBalance > 100 ? 100 : testWalletBalance
     // );
-   // console.log("Transferring " + transferAmount + " VTX from wallet");
+    // console.log("Transferring " + transferAmount + " VTX from wallet");
 
     await ledger.recordTransfer({
       from: {
@@ -120,38 +117,59 @@ describe("Ledger JS", function () {
       nonce: ""
     });
   });
+  
+  it("cannot transfer more funds than a wallet contains", async function () {
+     const testWalletBalance = await getTestWalletBalance();
+    // console.log("Test wallet has " + testWalletBalance);
 
+    // //Transfer some random amount more than the wallet balance
+     const transferAmount = testWalletBalance + getRandomInt(1, 100);
+    // console.log("Transferring " + transferAmount + " VTX");
 
-it("cannot transfer more funds than a wallet contains", async function() {
-  const testWalletBalance = await getTestWalletBalance();
-  console.log("Test wallet has " + testWalletBalance);
+    // try {
+      await ledger.recordTransfer({
+        from: {
+          account: TRUST_ACCOUNT,
+          wallet: TEST_WALLET
+        },
+        to: {
+          account: DISTRIBUTION_ACCOUNT
+        },
+        amount: transferAmount
+      });
 
-  // Transfer some random amount more than the wallet balance
-  const transferAmount = testWalletBalance + getRandomInt(1, 100);
-  console.log("Transferring " + transferAmount + " VTX");
+    //   expect.fail("", "", "Expected transfer to fail");
+    // } catch (e) {
+    //   if (e.name === "AssertionError") {
+    //     throw e;
+    //   }
+    // }
+  });
 
-  try {
-    await ledger.recordTransfer({
-      from: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      to: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      amount: transferAmount
-    });
+async function getTestWalletBalance() {
+  const balance = await ledger.retrieveBalance({
+    account: TRUST_ACCOUNT,
+    wallet: TEST_WALLET
+  });
 
-    expect.fail("", "", "Expected transfer to fail");
-  } catch (e) {
-    if (e.name === "AssertionError") {
-      throw e;
-    }
-  }
+  return balance.amount;
+}
+
+async function getDistributionAccountBalance() {
+  const balance = await ledger.retrieveBalance({
+    account: DISTRIBUTION_ACCOUNT
+  });
+
+  return balance.amount;
+}
+
 });
 
 
-});
+
+
+
+//});
 
 //   const newTestWalletBalance = await getTestWalletBalance();
 //   console.log("Test wallet now has " + newTestWalletBalance);
@@ -668,22 +686,7 @@ it("cannot transfer more funds than a wallet contains", async function() {
 //   });
 // }
 
-async function getTestWalletBalance() {
-  const balance = await ledger.retrieveBalance({
-    account: TRUST_ACCOUNT,
-    wallet: TEST_WALLET
-  });
 
-  return balance.amount;
-}
-
-async function getDistributionAccountBalance() {
-  const balance = await ledger.retrieveBalance({
-    account: DISTRIBUTION_ACCOUNT
-  });
-
-  return balance.amount;
-}
 
 /**
  * Returns a random integer between min (inclusive) and max (inclusive)
