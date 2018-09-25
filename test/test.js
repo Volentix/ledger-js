@@ -6,7 +6,7 @@ const uuid = require("uuid");
 const VtxLedger = require("../app/ledger");
 
 describe("Ledger JS", function () {
-  this.timeout(5000);
+  this.timeout(10000000);
 
   const DISTRIBUTION_ACCOUNT = "vtxdistrib";
   const TRUST_ACCOUNT = "vtxtrust";
@@ -22,7 +22,7 @@ describe("Ledger JS", function () {
     };
 
     ledger = new VtxLedger(config);
-  });
+});
 
 /////////////////////////////////////////////////////
   it("retreives transactions", async function () {
@@ -34,7 +34,7 @@ describe("Ledger JS", function () {
     expect(transactions)
       .to.have.property("output1")
       .which.is.an("array")
-      .lengthOf(2);
+      .lengthOf(2); 
   });
 /////////////////////////////////////////////////////
   it("retrieves a balance from account", async function () {
@@ -89,27 +89,8 @@ describe("Ledger JS", function () {
 /////////////////////////////////////////////////////
   it("transfers funds from wallet to account", async function () {
     let testWalletBalance = await getTestWalletBalance();
-    console.log("Test wallet has " + testWalletBalance);
     const distributionAccountBalance = await getDistributionAccountBalance();
-    //console.log("Distribution account has " + distributionAccountBalance);
-
-    if (testWalletBalance <= 0) {
-      const newTestWalletBalance = getRandomInt(0, 1000);
-      // transfer some VTX if there isn't any yet
-      await ledger.recordTransfer({
-        from: {
-          account: DISTRIBUTION_ACCOUNT
-        },
-        to: {
-          account: TRUST_ACCOUNT,
-          wallet: TEST_WALLET
-        },
-        amount: newTestWalletBalance,
-        nonce : "",
-        comment : ""
-      });
-      testWalletBalance = await getTestWalletBalance();
-    }
+    
 
     //Transfer some random amount
     const transferAmount = getRandomInt(
@@ -464,7 +445,7 @@ it("cannot transfer more funds than a wallet contains", async function() {
     expect.fail("", "", "Expected transfer to fail");
   } catch (e) {
     //console.log(e);
-    //expect(e.name).to.equal("insufficient_funds");
+    expect(e.name).to.equal("insufficient_funds");
   }
 });
 //TODO

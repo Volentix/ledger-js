@@ -20,7 +20,7 @@ class Ledger {
       })
     );
   }
-
+ 
   async retrieveBalance({ account, wallet }) {
    
     var output = await this.eos.getTableRows({
@@ -28,9 +28,14 @@ class Ledger {
       scope: 'stdvtxledger',
       table: 'entry',
       json: true,
+      limit: 100000
     });
-     var amount = 0; 
+     var amount = 0;
+    
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
+      if(wallet === "" && account ===""){
+        break; 
+      }
       if (wallet === "") {
         if (output.rows[i].fromAccount.localeCompare(account) == 0) {
           amount += output.rows[i].amount;
