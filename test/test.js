@@ -22,25 +22,18 @@ describe("Ledger JS", function () {
     };
 
     ledger = new VtxLedger(config);
-});
+   
 
-/////////////////////////////////////////////////////
-  it("retreives transactions", async function () {
-    const transactions = await ledger.retrieveTransactions({
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET,
-      limit: 2
-    });
-    expect(transactions)
-      .to.have.property("output1")
-      .which.is.an("array")
-      .lengthOf(2); 
+
+
   });
-/////////////////////////////////////////////////////
+
+  
+  /////////////////////////////////////////////////////
   it("retrieves a balance from account", async function () {
     const balance = await ledger.retrieveBalance({
-      account: DISTRIBUTION_ACCOUNT,
-      wallet: TEST_WALLET
+      account: TRUST_ACCOUNT,
+      wallet: ""
     });
 
     expect(balance)
@@ -52,169 +45,37 @@ describe("Ledger JS", function () {
       .to.have.a.property("currency")
       .that.equals("VTX");
   });
-/////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
+  it("retrieves a balance empty parameters", async function () {
+    const balance = await ledger.retrieveBalance({
+      account: "",
+      wallet: ""
+    });
+
+    expect(balance)
+      .to.have.a.property("amount")
+      .that.is.a("number")
+      .that.equals(0);
+
+    expect(balance)
+      .to.have.a.property("currency")
+      .that.equals("VTX");
+  });
+  /////////////////////////////////////////////////////
   it("retrieves a  balance from wallet", async function () {
     const newTestWallet = uuid();
     const balance = await ledger.retrieveBalance({
       account: DISTRIBUTION_ACCOUNT,
-      wallet: newTestWallet 
+      wallet: "EOS6EcERTUvtafcLMtrKycWF4JX5tFHnD7d9TPfyF1pdh6tgiWPpf"
     });
-
-    expect(balance).to.deep.equal({
-      amount: 0,
-      currency: "VTX"
-    });
+	console.log(balance)
+	 expect(balance)
+      .to.have.a.property("amount")
+      .that.is.a("number")
+      .that.is.above(0);
   });
 
-/////////////////////////////////////////////////////
-  it("transfers funds from account to wallet", async function () {
-
-    // Transfer some random amount
-    const transferAmount = getRandomInt(1, 100);
-    await ledger.recordTransfer({
-      from: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      to: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      amount: transferAmount,
-      comment: "",
-      nonce: ""
-
-    });
-  });
-
-/////////////////////////////////////////////////////
-  it("transfers funds from wallet to account", async function () {
-    let testWalletBalance = await getTestWalletBalance();
-    const distributionAccountBalance = await getDistributionAccountBalance();
-    
-
-    //Transfer some random amount
-    const transferAmount = getRandomInt(
-      1,
-      testWalletBalance > 100 ? 100 : testWalletBalance
-    );
-   // console.log("Transferring " + transferAmount + " VTX from wallet");
-
-    await ledger.recordTransfer({
-      from: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      to: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      amount: transferAmount,
-       nonce : "",
-        comment : ""
-
-    });
-  });
-///////////////////////////////////////////
-  it("creates a transfer from a wallet to an account and returns proper parameters", async function () {
-    const testAmount = getRandomInt(1, 100);
-    const transfer = await ledger.recordTransfer({
-      from: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      to: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      amount: testAmount
-    });
-
-    expect(transfer).to.include.keys({
-      from: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      to: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      amount: testAmount
-    });
-
-    expect(transfer)
-      .to.have.a.property("id")
-      .that.is.a("string")
-      .that.has.lengthOf.at.least(64);
-
-    expect(transfer)
-      .to.have.a.property("currency")
-      .that.equals("VTX");
-
-    expect(transfer)
-      .to.have.a.property("submittedAt")
-      .that.is.a("string")
-      .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
-  });
-/////////////////////////////////////////////////////
-  it("creates a transfer from an account to a wallet and returns proper parameters", async function () {
-    const testAmount = getRandomInt(1, 100);
-    const transfer = await ledger.recordTransfer({
-      from: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      to: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      amount: testAmount
-    });
-
-    expect(transfer).to.include.keys({
-      from: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      to: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      amount: testAmount
-    });
-
-    expect(transfer)
-      .to.have.a.property("id")
-      .that.is.a("string")
-      .that.has.lengthOf.at.least(64);
-
-    expect(transfer)
-      .to.have.a.property("currency")
-      .that.equals("VTX");
-
-    expect(transfer)
-      .to.have.a.property("submittedAt")
-      .that.is.a("string")
-      .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
-  });
-
-  /////////////////////////////////////////////////////
-  it("transfers funds from account to wallet", async function() {
-  const distributionAccountBalance = await getDistributionAccountBalance();
-  // console.log("Distribution account has " + distributionAccountBalance);
-  const testWalletBalance = await getTestWalletBalance();
-  // console.log("Test wallet has " + testWalletBalance);
-
-  // Transfer some random amount
-  const transferAmount = getRandomInt(1, 100);
-  // console.log("Transferring " + transferAmount + " VTX from account");
-
-  await ledger.recordTransfer({
-    from: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    to: {
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    },
-    amount: transferAmount
-  });
-});
-/////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////
   it("retrieves zero transactions from a new wallet", async function () {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
@@ -225,7 +86,7 @@ describe("Ledger JS", function () {
       output1: []
     });
   });
-/////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
   it("retrieves 1 transaction from a wallet", async function () {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
@@ -238,240 +99,59 @@ describe("Ledger JS", function () {
       .which.is.an("array")
       .lengthOf(1);
   });
-/////////////////////////////////////////////////////
-it("creates a transfer from a wallet to an account and returns sent parameters", async function() {
-  const testAmount = getRandomInt(1, 100);
-  const transfer = await ledger.recordTransfer({
-    from: {
+   //////////////////////////////////////////////////////////////////////
+  it("retrieves 1 transaction from a wallet when requesting only 1", async function () {
+    const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    },
-    to: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    amount: testAmount
-  });
-
-  expect(transfer).to.include.keys({
-    from: {
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    },
-    to: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    amount: testAmount
-   });
-   expect(transfer)
-    .to.have.a.property("id")
-    .that.is.a("string")
-    .that.has.lengthOf.at.least(64);
-
-  expect(transfer)
-    .to.have.a.property("currency")
-    .that.equals("VTX");
-
-  expect(transfer)
-    .to.have.a.property("submittedAt")
-    .that.is.a("string")
-    .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
-});
-/////////////////////////////////////////////////////
-it("creates a transfer from an account to a wallet and returns sent parameters", async function() {
-  const testAmount = getRandomInt(1, 100);
-  const transfer = await ledger.recordTransfer({
-    from: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    to: {
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    },
-    amount: testAmount
-  });
-
-  expect(transfer).to.include.keys({
-    from: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    to: {
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    },
-    amount: testAmount
-  });
-
-  expect(transfer)
-    .to.have.a.property("id")
-    .that.is.a("string")
-    .that.has.lengthOf.at.least(64);
-
-  expect(transfer)
-    .to.have.a.property("currency")
-    .that.equals("VTX");
-
-  expect(transfer)
-    .to.have.a.property("submittedAt")
-    .that.is.a("string")
-    .that.matches(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
-});
-/////////////////////////////////////////////////////
-it("creates a transfer with comment field", async function() {
-  const testAmount = getRandomInt(1, 100);
-  const testComment = "A test comment";
-  const transfer = await ledger.recordTransfer({
-    from: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    to: {
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    },
-    amount: testAmount,
-    comment: testComment
-  });
-
-  expect(transfer.comment).to.equal(testComment);
-});
-
-it("retrieves zero transactions from a new wallet", async function() {
-  const transactions = await ledger.retrieveTransactions({
-    account: TRUST_ACCOUNT,
-    wallet: uuid(),
-    limit: 1
-  });
-
-  expect(transactions).to.deep.equal({
-    output1: []
-  });
-});
-/////////////////////////////////////////////////////
-it("retrieves 1 transaction from a wallet with only 1 transaction", async function() {
-  const testAmount = getRandomInt(1, 100);
-  const newTestWallet = uuid();
-  await ledger.recordTransfer({
-    from: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    to: {
-      account: TRUST_ACCOUNT,
-      wallet: newTestWallet
-    },
-    amount: testAmount
-  });
-
-  const transactions = await ledger.retrieveTransactions({
-    account: TRUST_ACCOUNT,
-    wallet: newTestWallet
-  });
-
-  expect(transactions)
-    .to.have.property("output1")
-    .which.is.an("array")
-    .lengthOf(1);
-});
-/////////////////////////////////////////////////////
-it("retrieves a transaction with a comment", async function() {
-  const testAmount = getRandomInt(1, 100);
-  const testComment = "a test comment";
-  const newTestWallet = uuid();
-  await ledger.recordTransfer({
-    from: {
-      account: DISTRIBUTION_ACCOUNT
-    },
-    to: {
-      account: TRUST_ACCOUNT,
-      wallet: newTestWallet
-    },
-    amount: testAmount,
-    comment: testComment
-  });
-
-  const transactions = await ledger.retrieveTransactions({
-    account: TRUST_ACCOUNT,
-    wallet: newTestWallet,
-    limit : 1
-  });
-
-  expect(transactions.output1[0].comment).to.equal(testComment);
-});
-//////////////////////////////////////////////////////////////////////
-it("retrieves 1 transaction from a wallet when requesting only 1", async function() {
-  const transactions = await ledger.retrieveTransactions({
-    account: TRUST_ACCOUNT,
-    wallet: TEST_WALLET,
-    limit: 1
-  });
-
-  expect(transactions)
-    .to.have.property("output1")
-    .which.is.an("array")
-    .lengthOf(1);
-});
-/////////////////////////////////////////////////////
-it("retrieves 2 transactions from a wallet when requesting only 2", async function() {
-  const transactions = await ledger.retrieveTransactions({
-    account: TRUST_ACCOUNT,
-    wallet: TEST_WALLET,
-    limit: 2
-  });
-
-  expect(transactions)
-    .to.have.property("output1")
-    .which.is.an("array")
-    .lengthOf(2);
-});
-
-
-
-/////////////////////////////////////////////////////
-it("cannot transfer more funds than a wallet contains", async function() {
-  const testWalletBalance = await getTestWalletBalance();
-  // Transfer some random amount more than the wallet balance
-  const transferAmount = testWalletBalance + getRandomInt(1, 100);
-  // console.log("Transferring " + transferAmount + " VTX");
-  try {
-    await ledger.recordTransfer({
-      from: {
-        account: TRUST_ACCOUNT,
-        wallet: TEST_WALLET
-      },
-      to: {
-        account: DISTRIBUTION_ACCOUNT
-      },
-      amount: transferAmount
+      wallet: TEST_WALLET,
+      limit: 1
     });
 
-    expect.fail("", "", "Expected transfer to fail");
-  } catch (e) {
-    //console.log(e);
-    expect(e.name).to.equal("insufficient_funds");
-  }
-});
-//TODO
-// it("retrieves a transaction with a block number", async function() {
-//   const testAmount = getRandomInt(1, 100);
-//   const newTestWallet = uuid();
-//   await ledger.recordTransfer({
-//     from: {
-//       account: DISTRIBUTION_ACCOUNT
-//     },
-//     to: {
-//       account: TRUST_ACCOUNT,
-//       wallet: newTestWallet
-//     },
-//     amount: testAmount
-//   });
+    expect(transactions)
+      .to.have.property("output1")
+      .which.is.an("array")
+      .lengthOf(1);
+  });
+  /////////////////////////////////////////////////////
+  it("retrieves 2 transactions from a wallet when requesting only 2", async function () {
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: TEST_WALLET,
+      limit: 2
+    });
 
-//   const transactions = await ledger.retrieveTransactions({
-//     account: TRUST_ACCOUNT,
-//     wallet: newTestWallet
-//   });
+    expect(transactions)
+      .to.have.property("output1")
+      .which.is.an("array")
+      .lengthOf(2);
+  });
 
-//   expect(transactions.transactions[0].blockNumber)
-//     .to.be.a("number")
-//     .which.is.greaterThan(1000);
-// });
+
+
+  //TODO
+  // it("retrieves a transaction with a block number", async function() {
+  //   const testAmount = getRandomInt(1, 100);
+  //   const newTestWallet = uuid();
+  //   await ledger.recordTransfer({
+  //     from: {
+  //       account: DISTRIBUTION_ACCOUNT
+  //     },
+  //     to: {
+  //       account: TRUST_ACCOUNT,
+  //       wallet: newTestWallet
+  //     },
+  //     amount: testAmount
+  //   });
+
+  //   const transactions = await ledger.retrieveTransactions({
+  //     account: TRUST_ACCOUNT,
+  //     wallet: newTestWallet
+  //   });
+
+  //   expect(transactions.transactions[0].blockNumber)
+  //     .to.be.a("number")
+  //     .which.is.greaterThan(1000);
+  // });
 
   async function getTestWalletBalance() {
     const balance = await ledger.retrieveBalance({
