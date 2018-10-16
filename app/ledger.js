@@ -22,7 +22,6 @@ class Ledger {
   }
 
   async retrieveBalance({ account, wallet }) {
-    console.log("CAN YOU SEE ME NOW");
     var output = await this.eos.getTableRows({
       code: "prevtxledger",
       scope: "prevtxledger",
