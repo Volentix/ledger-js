@@ -22,7 +22,7 @@ class Ledger {
   }
 
   async retrieveBalance({ account, wallet }) {
-
+    console.log("CAN YOU SEE ME");
     // var output = await this.eos.getTableRows({
     //   code: "prevtxledger",
     //   scope: "prevtxledger",
@@ -92,48 +92,48 @@ class Ledger {
 
 
   async recordTransfer({ from, to, amount, comment }) {
-    const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
+    // const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
-    const submittedAt = new Date();
-    try {
-      const transfer = await contract.rcrdtfr({
-        nonce: uuid(),
-        s: this.TREASURY_ACCOUNT_NAME,
-        fromaccount: from.account,
-        toaccount: to.account,
-        fromkey: from.wallet ? from.wallet : "",
-        tokey: to.wallet ? to.wallet : "",
-        amount,
-        comment: comment ? comment : ""
-      });
-      //console.log("recordTransfer: ", JSON.stringify(transfer, null, 2));
-      return {
-        from,
-        to,
-        amount,
-        submittedAt: moment(submittedAt).format(),
-        id: transfer.processed.id,
-        currency: "VTX", // TODO Should be returned from server
-        comment
-      };
-    } catch (eStr) {
-      const e = JSON.parse(eStr);
-      // { "code": 500, "message": "Internal Service Error", "error": { "code": 3050003, "name": "eosio_assert_message_exception", "what": "eosio_assert_message assertion failure", "details": [{ "message": "assertion failure with message: insufficient_funds", "file": "wasm_interface.cpp", "line_number": 930, "method": "eosio_assert" }, { "message": "pending console output: Wallet to account", "file": "apply_context.cpp", "line_number": 61, "method": "exec_one" }] } }
+    // const submittedAt = new Date();
+    // try {
+    //   const transfer = await contract.rcrdtfr({
+    //     nonce: uuid(),
+    //     s: this.TREASURY_ACCOUNT_NAME,
+    //     fromaccount: from.account,
+    //     toaccount: to.account,
+    //     fromkey: from.wallet ? from.wallet : "",
+    //     tokey: to.wallet ? to.wallet : "",
+    //     amount,
+    //     comment: comment ? comment : ""
+    //   });
+    //   //console.log("recordTransfer: ", JSON.stringify(transfer, null, 2));
+    //   return {
+    //     from,
+    //     to,
+    //     amount,
+    //     submittedAt: moment(submittedAt).format(),
+    //     id: transfer.processed.id,
+    //     currency: "VTX", // TODO Should be returned from server
+    //     comment
+    //   };
+    // } catch (eStr) {
+    //   const e = JSON.parse(eStr);
+    //   // { "code": 500, "message": "Internal Service Error", "error": { "code": 3050003, "name": "eosio_assert_message_exception", "what": "eosio_assert_message assertion failure", "details": [{ "message": "assertion failure with message: insufficient_funds", "file": "wasm_interface.cpp", "line_number": 930, "method": "eosio_assert" }, { "message": "pending console output: Wallet to account", "file": "apply_context.cpp", "line_number": 61, "method": "exec_one" }] } }
 
-      if (
-        e.error &&
-        e.error.details &&
-        e.error.details[0] &&
-        e.error.details[0].message &&
-        e.error.details[0].message.startsWith(BOILERPLATE_ASSERTION_TEXT)
-      ) {
-        e.name = e.error.details[0].message.slice(
-          BOILERPLATE_ASSERTION_TEXT.length
-        );
-      }
+    //   if (
+    //     e.error &&
+    //     e.error.details &&
+    //     e.error.details[0] &&
+    //     e.error.details[0].message &&
+    //     e.error.details[0].message.startsWith(BOILERPLATE_ASSERTION_TEXT)
+    //   ) {
+    //     e.name = e.error.details[0].message.slice(
+    //       BOILERPLATE_ASSERTION_TEXT.length
+    //     );
+    //   }
 
-      throw e;
-    }
+    //   throw e;
+    // }
 
   }
   // Retrieve all transactions performed from / to this account & wallet
