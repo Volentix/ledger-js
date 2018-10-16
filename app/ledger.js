@@ -7,7 +7,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
   constructor(config) {
-    this.LEDGER_ACCOUNT_NAME = "stdvtxledger";
+    this.LEDGER_ACCOUNT_NAME = "prevtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -20,21 +20,21 @@ class Ledger {
       })
     );
   }
- 
+
   async retrieveBalance({ account, wallet }) {
-   
+
     var output = await this.eos.getTableRows({
-      code: 'stdvtxledger',
-      scope: 'stdvtxledger',
-      table: 'entry',
+      code: "prevtxledger",
+      scope: "prevtxledger",
+      table: "entry",
       json: true,
       limit: 100000
     });
      var amount = 0;
-    
+
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
       if(wallet === "" && account ===""){
-        break; 
+        break;
       }
       if (wallet === "") {
         if (output.rows[i].fromAccount.localeCompare(account) == 0) {
@@ -55,13 +55,13 @@ class Ledger {
      }
     return {
       amount,
-      currency: "VTX"  
+      currency: "VTX"
     };
     vtxledger, vtxledger, entry;
   }
-  
 
-  
+
+
   async recordTransfer({ from, to, amount, comment }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
 
@@ -110,9 +110,9 @@ class Ledger {
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
     var output = await this.eos.getTableRows({
-      code: 'stdvtxledger',
-      scope: 'stdvtxledger',
-      table: 'entry',
+      code: "prevtxledger",
+      scope: "prevtxledger",
+      table: "entry",
       json: true,
       limit: 100000
     });
@@ -135,9 +135,9 @@ class Ledger {
         }
       }
      }
-    output1.splice(0, Object.keys(output1).length - limit); 
+    output1.splice(0, Object.keys(output1).length - limit);
     return {
-      output1 
+      output1
     };
 
     vtxledger, vtxledger, entry;
