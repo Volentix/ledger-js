@@ -28,7 +28,7 @@ class Ledger {
       scope: "prevtxledger",
       table: "entry",
       json: true,
-      limit: 100000
+      limit: 1
     });
      var amount = 0;
 
