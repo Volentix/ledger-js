@@ -23,13 +23,42 @@ class Ledger {
 
   async retrieveBalance({ account, wallet }) {
 
-    var output = await this.eos.getTableRows({
-      code: "prevtxledger",
-      scope: "prevtxledger",
-      table: "entry",
-      json: true,
-      limit: 1
-    });
+    // var output = await this.eos.getTableRows({
+    //   code: "prevtxledger",
+    //   scope: "prevtxledger",
+    //   table: "entry",
+    //   json: true,
+    //   limit: 1
+    // });
+
+    var output = [{
+        "s": "",
+        "key": 0,
+        "Id": 0,
+        "sToKey": "",
+        "fromAccount": "vtxdistrib",
+        "toAccount": "",
+        "fromKey": "",
+        "amount": -100,
+        "comment": "test",
+        "nonce": "nonce",
+        "tbn": 27263,
+        "timestamp": "1539627098500000"
+      }, {
+        "s": "",
+        "key": 1,
+        "Id": 1,
+        "sToKey": "EOS6EcERTUvtafcLMtrKycWF4JX5tFHnD7d9TPfyF1pdh6tgiWPpf",
+        "fromAccount": "",
+        "toAccount": "vtxtrust",
+        "fromKey": "",
+        "amount": 100,
+        "comment": "test",
+        "nonce": "nonce",
+        "tbn": 27263,
+        "timestamp": "1539627098500000"
+      }];
+
      var amount = 0;
 
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
@@ -109,13 +138,42 @@ class Ledger {
   }
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
-    var output = await this.eos.getTableRows({
-      code: "prevtxledger",
-      scope: "prevtxledger",
-      table: "entry",
-      json: true,
-      limit: 100000
-    });
+    // var output = await this.eos.getTableRows({
+    //   code: "prevtxledger",
+    //   scope: "prevtxledger",
+    //   table: "entry",
+    //   json: true,
+    //   limit: 100000
+    // });
+
+    var output = [{
+      "s": "",
+      "key": 0,
+      "Id": 0,
+      "sToKey": "",
+      "fromAccount": "vtxdistrib",
+      "toAccount": "",
+      "fromKey": "",
+      "amount": -100,
+      "comment": "test",
+      "nonce": "nonce",
+      "tbn": 27263,
+      "timestamp": "1539627098500000"
+    }, {
+      "s": "",
+      "key": 1,
+      "Id": 1,
+      "sToKey": "EOS6EcERTUvtafcLMtrKycWF4JX5tFHnD7d9TPfyF1pdh6tgiWPpf",
+      "fromAccount": "",
+      "toAccount": "vtxtrust",
+      "fromKey": "",
+      "amount": 100,
+      "comment": "test",
+      "nonce": "nonce",
+      "tbn": 27263,
+      "timestamp": "1539627098500000"
+    }];
+
     var output1 = []
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
       if (wallet === "") {
