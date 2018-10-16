@@ -27,9 +27,10 @@ class Ledger {
       scope: "prevtxledger",
       table: "entry",
       json: true,
-      limit: 1
+      limit: 100000
     });
 
+     console.log(output);
      var amount = 0;
 
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
