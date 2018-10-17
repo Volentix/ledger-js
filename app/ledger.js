@@ -7,7 +7,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
   constructor(config) {
-    this.LEDGER_ACCOUNT_NAME = "prevtxledger";
+    this.LEDGER_ACCOUNT_NAME = "wrkvtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -23,14 +23,14 @@ class Ledger {
 
   async retrieveBalance({ account, wallet }) {
     var output = await this.eos.getTableRows({
-      code: "prevtxledger",
-      scope: "prevtxledger",
+      code: "wrkvtxledger",
+      scope: "wrkvtxledger",
       table: "entry",
       json: true,
       limit: 100000
     });
 
-     console.log(output);
+     //console.log(output);
      var amount = 0;
 
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
@@ -39,18 +39,18 @@ class Ledger {
       }
       if (wallet === "") {
         if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-          amount += output.rows[i].amount;
+          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
         }
         if (output.rows[i].toAccount.localeCompare(account) == 0) {
-          amount += output.rows[i].amount;
+          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
         }
       }
       else  {
         if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
-          amount += output.rows[i].amount;
+          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
         }
         if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
-          amount +=  output.rows[i].amount;
+          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
         }
       }
      }
@@ -111,8 +111,8 @@ class Ledger {
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
     var output = await this.eos.getTableRows({
-      code: "prevtxledger",
-      scope: "prevtxledger",
+      code: "wrkvtxledger",
+      scope: "wrkvtxledger",
       table: "entry",
       json: true,
       limit: 100000
