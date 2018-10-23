@@ -7,7 +7,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
   constructor(config) {
-    this.LEDGER_ACCOUNT_NAME = "wrkvtxledger";
+    this.LEDGER_ACCOUNT_NAME = "112vtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -23,8 +23,8 @@ class Ledger {
 
   async retrieveBalance({ account, wallet }) {
     var output = await this.eos.getTableRows({
-      code: "wrkvtxledger",
-      scope: "wrkvtxledger",
+      code: "112vtxledger",
+      scope: "112vtxledger",
       table: "entry",
       json: true,
       limit: 100000
