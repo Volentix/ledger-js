@@ -111,8 +111,8 @@ class Ledger {
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
     var output = await this.eos.getTableRows({
-      code: "wrkvtxledger",
-      scope: "wrkvtxledger",
+      code: "112vtxledger",
+      scope: "112vtxledger",
       table: "entry",
       json: true,
       limit: 100000
