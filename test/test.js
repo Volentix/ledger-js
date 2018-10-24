@@ -10,10 +10,10 @@ describe("Ledger JS", function () {
 
   const DISTRIBUTION_ACCOUNT = "vtxdistrib";
   const TRUST_ACCOUNT = "vtxtrust";
-  
+
  // const TEST_WALLET = "EOS6EcERTUvtafcLMtrKycWF4JX5tFHnD7d9TPfyF1pdh6tgiWPpd";
   const TEST_WALLET = "EOS62L2r4FqnCbHAspPS3KBByGa728G3UDYxGkTY15mad97M4JhzN";
-  
+
 
   let ledger = {};
 
@@ -25,16 +25,16 @@ describe("Ledger JS", function () {
     };
 
     ledger = new VtxLedger(config);
-  
+
   });
 
 /////////////////////////////////////////////////////
-  it("retrieves a balance from account", async function () {
-    const balance = await ledger.retrieveBalance({
-      account: TRUST_ACCOUNT,
-      wallet: TEST_WALLET
-    });
-    console.log(balance);
+  // it("retrieves a balance from account", async function () {
+  //   const balance = await ledger.retrieveBalance({
+  //     account: TRUST_ACCOUNT,
+  //     wallet: TEST_WALLET
+  //   });
+  //   console.log(balance);
 //    expect(balance)
 //      .to.have.a.property("amount")
 //      .that.is.a("number")
@@ -43,7 +43,7 @@ describe("Ledger JS", function () {
 //    expect(balance)
 //      .to.have.a.property("currency")
 //      .that.equals("VTX");
-  });
+  // });
 //  /////////////////////////////////////////////////////
 //  it("retrieves a balance empty parameters", async function () {
 //    const balance = await ledger.retrieveBalance({
@@ -86,18 +86,17 @@ describe("Ledger JS", function () {
 //    });
 //  });
 //  /////////////////////////////////////////////////////
-//  it("retrieves 1 transaction from a wallet", async function () {
-//    const transactions = await ledger.retrieveTransactions({
-//      account: TRUST_ACCOUNT,
-//      wallet: TEST_WALLET,
-//      limit: 1
-//    });
-//
-//    expect(transactions)
-//      .to.have.property("output1")
-//      .which.is.an("array")
-//      .lengthOf(1);
-//  });
+  it("retrieves 1 transaction from a wallet", async function () {
+    const transactions = await ledger.retrieveTransactions({
+      account: TRUST_ACCOUNT,
+      wallet: TEST_WALLET
+    });
+    console.log("Transactions:", transactions.transactions.length);
+    //  expect(transactions)
+    //    .to.have.property("output1")
+    //    .which.is.an("array")
+    //    .lengthOf(1);
+  });
 //   //////////////////////////////////////////////////////////////////////
 //  it("retrieves 1 transaction from a wallet when requesting only 1", async function () {
 //    const transactions = await ledger.retrieveTransactions({
