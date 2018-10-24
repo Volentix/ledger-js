@@ -26,13 +26,12 @@ class Ledger {
     var amount = 0.0;
     var ub = 0;
     var lb = 0;
-    for (var j = 0; j < 100000000; j++) {
-    	ub = j * 1000;
+    var flag = true;
+    var counter = 1;
+    while(flag) {
+    	ub = counter * 1000;
     	lb = ub - 1000;
-    	if (lb < 0){
-    		lb = 0;
-    	}
-    	
+
     	var output = await this.eos.getTableRows({
     	      code: 'wrkvtxledger',
     	      scope: 'wrkvtxledger',
@@ -42,8 +41,8 @@ class Ledger {
     	      upper_bound: ub,
     	      lower_bound: lb
     	    });
-    	if (Object.keys(output.rows).length == 0 && j > 0){
-    		break;
+    	if (Object.keys(output.rows).length == 0){
+    		flag = false;
     	}
 	     for (var i = 0; i < Object.keys(output.rows).length; i++) {
 	      if(wallet === "" && account ===""){
@@ -51,7 +50,7 @@ class Ledger {
 	      }
 	      if (wallet === "") {
 	        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-	
+
 	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
 	        }
 //	        if (output.rows[i].toAccount.localeCompare(account) == 0) {
@@ -60,11 +59,12 @@ class Ledger {
 	      }
 	      else  {
 	        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
-	
+
 	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
 	        }
 	      }
-	     }
+       }
+      counter++;
     }
     return {
       amount,
@@ -120,38 +120,53 @@ class Ledger {
   }
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
-    var output = await this.eos.getTableRows({
-      code: 'wrkvtxledger',
-      scope: 'wrkvtxledger',
-      table: 'entry',
-      json: true,
-      limit: 100000
-    });
-    
-    var output1 = []
-    
-     for (var i = 0; i < Object.keys(output.rows).length; i++) {
-      if (wallet === "") {
-        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-          output1.push(output.rows[i]);
+    var ub = 0;
+    var lb = 0;
+    var transactions = [];
+    var flag = true;
+    var counter = 1;
+    while(flag) {
+      ub = counter * 1000;
+      lb = ub - 1000;
+
+      var output = await this.eos.getTableRows({
+        code: 'wrkvtxledger',
+        scope: 'wrkvtxledger',
+        table: 'entry',
+        json: true,
+        limit: 1000,
+        upper_bound: ub,
+        lower_bound: lb
+      });
+      // console.log("lap: ", transactions.length);
+      if (Object.keys(output.rows).length == 0) {
+        flag = false;
+      }
+
+      for (var i = 0; i < Object.keys(output.rows).length; i++) {
+        if (wallet === "") {
+          if (output.rows[i].fromAccount.localeCompare(account) == 0) {
+            transactions.push(output.rows[i]);
+          }
+          // if (output.rows[i].toAccount.localeCompare(account) == 0) {
+          //   output1.push(output.rows[i]);
+          // }
         }
-        if (output.rows[i].toAccount.localeCompare(account) == 0) {
-          output1.push(output.rows[i]);
+        else  {
+          if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
+            transactions.push(output.rows[i]);
+          }
+          // if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
+          //   output1.push(output.rows[i]);
+          // }
         }
       }
-      else  {
-        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
-          output1.push(output.rows[i]);
-        }
-        if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
-          output1.push(output.rows[i]);
-        }
-      }
-     }
-    
-    output1.splice(0, Object.keys(output1).length - limit);
+      transactions.splice(0, Object.keys(transactions).length - limit);
+      counter++;
+    }
+    // console.log("Size:", transactions.length);
     return {
-      output1
+      transactions
     };
 
     vtxledger, vtxledger, entry;
