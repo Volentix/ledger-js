@@ -7,7 +7,8 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
   constructor(config) {
-    this.LEDGER_ACCOUNT_NAME = "112vtxledger";
+
+    this.LEDGER_ACCOUNT_NAME = "wrkvtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -22,46 +23,55 @@ class Ledger {
   }
 
   async retrieveBalance({ account, wallet }) {
-    var output = await this.eos.getTableRows({
-      code: "112vtxledger",
-      scope: "112vtxledger",
-      table: "entry",
-      json: true,
-      limit: 100000
-    });
-
-     //console.log(output);
-     var amount = 0;
-
-     for (var i = 0; i < Object.keys(output.rows).length; i++) {
-      if(wallet === "" && account ===""){
-        break;
-      }
-      if (wallet === "") {
-        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-        }
-        if (output.rows[i].toAccount.localeCompare(account) == 0) {
-          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-        }
-      }
-      else  {
-        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
-          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-        }
-        if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
-          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-        }
-      }
-     }
+    var amount = 0.0;
+    var ub = 0;
+    var lb = 0;
+    for (var j = 0; j < 100000000; j++) {
+    	ub = j * 1000;
+    	lb = ub - 1000;
+    	if (lb < 0){
+    		lb = 0;
+    	}
+    	
+    	var output = await this.eos.getTableRows({
+    	      code: 'wrkvtxledger',
+    	      scope: 'wrkvtxledger',
+    	      table: 'entry',
+    	      json: true,
+    	      limit: 1000,
+    	      upper_bound: ub,
+    	      lower_bound: lb
+    	    });
+    	if (Object.keys(output.rows).length == 0 && j > 0){
+    		break;
+    	}
+	     for (var i = 0; i < Object.keys(output.rows).length; i++) {
+	      if(wallet === "" && account ===""){
+	        break;
+	      }
+	      if (wallet === "") {
+	        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
+	
+	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+	        }
+//	        if (output.rows[i].toAccount.localeCompare(account) == 0) {
+//	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+//	        }
+	      }
+	      else  {
+	        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
+	
+	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+	        }
+	      }
+	     }
+    }
     return {
       amount,
       currency: "VTX"
     };
     vtxledger, vtxledger, entry;
   }
-
-
 
   async recordTransfer({ from, to, amount, comment }) {
     const contract = await this.eos.contract(this.LEDGER_ACCOUNT_NAME);
@@ -111,14 +121,15 @@ class Ledger {
   // Retrieve all transactions performed from / to this account & wallet
   async retrieveTransactions({ account, wallet, limit }) {
     var output = await this.eos.getTableRows({
-      code: "112vtxledger",
-      scope: "112vtxledger",
-      table: "entry",
+      code: 'wrkvtxledger',
+      scope: 'wrkvtxledger',
+      table: 'entry',
       json: true,
       limit: 100000
     });
-
+    
     var output1 = []
+    
      for (var i = 0; i < Object.keys(output.rows).length; i++) {
       if (wallet === "") {
         if (output.rows[i].fromAccount.localeCompare(account) == 0) {
@@ -137,6 +148,7 @@ class Ledger {
         }
       }
      }
+    
     output1.splice(0, Object.keys(output1).length - limit);
     return {
       output1
