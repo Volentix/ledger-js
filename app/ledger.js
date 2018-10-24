@@ -148,17 +148,17 @@ class Ledger {
           if (output.rows[i].fromAccount.localeCompare(account) == 0) {
             transactions.push(output.rows[i]);
           }
-          // if (output.rows[i].toAccount.localeCompare(account) == 0) {
-          //   output1.push(output.rows[i]);
-          // }
+          if (output.rows[i].toAccount.localeCompare(account) == 0) {
+            transactions.push(output.rows[i]);
+          }
         }
         else  {
           if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
             transactions.push(output.rows[i]);
           }
-          // if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
-          //   output1.push(output.rows[i]);
-          // }
+          if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
+            transactions.push(output.rows[i]);
+          }
         }
       }
       transactions.splice(0, Object.keys(transactions).length - limit);
