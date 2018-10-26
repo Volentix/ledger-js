@@ -12,7 +12,7 @@ describe("Ledger JS", function () {
   const TRUST_ACCOUNT = "vtxtrust";
 
  // const TEST_WALLET = "EOS6EcERTUvtafcLMtrKycWF4JX5tFHnD7d9TPfyF1pdh6tgiWPpd";
-  const TEST_WALLET = "EOS62L2r4FqnCbHAspPS3KBByGa728G3UDYxGkTY15mad97M4JhzN";
+  const TEST_WALLET = "EOS81gkcgHo6Q12m8tjd2Ye5m18zbr4wGWh2bqU3XuLYrburgEf2T";
 
 
   let ledger = {};
@@ -29,12 +29,12 @@ describe("Ledger JS", function () {
   });
 
 /////////////////////////////////////////////////////
-  // it("retrieves a balance from account", async function () {
-  //   const balance = await ledger.retrieveBalance({
-  //     account: TRUST_ACCOUNT,
-  //     wallet: TEST_WALLET
-  //   });
-  //   console.log(balance);
+  it("retrieves a balance from account", async function () {
+    const balance = await ledger.retrieveBalance({
+      account: TRUST_ACCOUNT,
+      wallet: TEST_WALLET
+    });
+    console.log(balance);
 //    expect(balance)
 //      .to.have.a.property("amount")
 //      .that.is.a("number")
@@ -43,7 +43,7 @@ describe("Ledger JS", function () {
 //    expect(balance)
 //      .to.have.a.property("currency")
 //      .that.equals("VTX");
-  // });
+  });
 //  /////////////////////////////////////////////////////
 //  it("retrieves a balance empty parameters", async function () {
 //    const balance = await ledger.retrieveBalance({

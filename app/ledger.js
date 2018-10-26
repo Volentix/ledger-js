@@ -8,7 +8,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 class Ledger {
   constructor(config) {
 
-    this.LEDGER_ACCOUNT_NAME = "wrkvtxledger";
+    this.LEDGER_ACCOUNT_NAME = "112vtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -28,42 +28,42 @@ class Ledger {
     var lb = 0;
     var flag = true;
     var counter = 1;
+
     while(flag) {
-    	ub = counter * 1000;
-    	lb = ub - 1000;
+      ub = counter * 1000;
+      lb = ub - 1000;
+      var output = await this.eos.getTableRows({
+            code: '112vtxledger',
+            scope: '112vtxledger',
+            table: 'entry',
+            json: true,
+            limit: 1000,
+            upper_bound: ub,
+            lower_bound: lb
+          });
+      if (Object.keys(output.rows).length == 0){
+        flag = false;
+      }
+      for (var i = 0; i < Object.keys(output.rows).length; i++) {
+        if(wallet === "" && account ===""){
+          break;
+        }
+        if (wallet === "") {
+          if (output.rows[i].fromAccount.localeCompare(account) == 0) {
 
-    	var output = await this.eos.getTableRows({
-    	      code: 'wrkvtxledger',
-    	      scope: 'wrkvtxledger',
-    	      table: 'entry',
-    	      json: true,
-    	      limit: 1000,
-    	      upper_bound: ub,
-    	      lower_bound: lb
-    	    });
-    	if (Object.keys(output.rows).length == 0){
-    		flag = false;
-    	}
-	     for (var i = 0; i < Object.keys(output.rows).length; i++) {
-	      if(wallet === "" && account ===""){
-	        break;
-	      }
-	      if (wallet === "") {
-	        if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-
-	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-	        }
+            amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+          }
 //	        if (output.rows[i].toAccount.localeCompare(account) == 0) {
 //	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
 //	        }
-	      }
-	      else  {
-	        if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
+        }
+        else  {
+          if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
 
-	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-	        }
-	      }
-       }
+            amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+          }
+        }
+      }
       counter++;
     }
     return {
@@ -130,8 +130,8 @@ class Ledger {
       lb = ub - 1000;
 
       var output = await this.eos.getTableRows({
-        code: 'wrkvtxledger',
-        scope: 'wrkvtxledger',
+        code: '112vtxledger',
+        scope: '112vtxledger',
         table: 'entry',
         json: true,
         limit: 1000,
