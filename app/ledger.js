@@ -50,12 +50,11 @@ class Ledger {
         }
         if (wallet === "") {
           if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-
             amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
           }
-//	        if (output.rows[i].toAccount.localeCompare(account) == 0) {
-//	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
-//	        }
+	        if (output.rows[i].toAccount.localeCompare(account) == 0) {
+	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+	        }
         }
         else  {
           if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
