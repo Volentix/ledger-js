@@ -8,7 +8,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 class Ledger {
   constructor(config) {
 
-    this.LEDGER_ACCOUNT_NAME = "112vtxledger";
+    this.LEDGER_ACCOUNT_NAME = "tgevtxledger";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
@@ -33,8 +33,8 @@ class Ledger {
       ub = counter * 1000;
       lb = ub - 1000;
       var output = await this.eos.getTableRows({
-            code: '112vtxledger',
-            scope: '112vtxledger',
+            code: 'tgevtxledger',
+            scope: 'tgevtxledger',
             table: 'entry',
             json: true,
             limit: 1000,
@@ -129,8 +129,8 @@ class Ledger {
       lb = ub - 1000;
 
       var output = await this.eos.getTableRows({
-        code: '112vtxledger',
-        scope: '112vtxledger',
+        code: 'tgevtxledger',
+        scope: 'tgevtxledger',
         table: 'entry',
         json: true,
         limit: 1000,
