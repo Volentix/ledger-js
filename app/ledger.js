@@ -28,15 +28,15 @@ class Ledger {
     var flag = true;
     var counter = 1;
 
-   // while(flag) {
-      ub = counter * 500;
-      lb = ub - 500;
+    while(flag) {
+      ub = counter * 1000;
+      lb = ub - 1000;
       var output = await this.eos.getTableRows({
             code: this.LEDGER_ACCOUNT_NAME,
             scope: this.LEDGER_ACCOUNT_NAME,
             table: 'entry',
             json: true,
-            limit: 500,
+            limit: 1000,
             upper_bound: ub,
             lower_bound: lb
           });
@@ -63,7 +63,7 @@ class Ledger {
         }
       }
       counter++;
-    //}
+    }
     return {
       amount,
       currency: "VTX"
@@ -124,15 +124,15 @@ class Ledger {
     var flag = true;
     var counter = 1;
     while(flag) {
-      ub = counter * 500;
-      lb = ub - 500;
+      ub = counter * 1000;
+      lb = ub - 1000;
 
       var output = await this.eos.getTableRows({
         code: this.LEDGER_ACCOUNT_NAME,
         scope: this.LEDGER_ACCOUNT_NAME,
         table: 'entry',
         json: true,
-        limit: 500,
+        limit: 1000,
         upper_bound: ub,
         lower_bound: lb
       });
