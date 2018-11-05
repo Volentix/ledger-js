@@ -24,7 +24,7 @@ describe("Ledger JS", function () {
       keyProvider: process.env.KEY_PROVIDER
     };
 
-    ledger = new VtxLedger(config, "112vtxledger");
+    ledger = new VtxLedger(config, "vltxtgevtxtr");
 
   });
 
@@ -86,7 +86,7 @@ describe("Ledger JS", function () {
 //    });
 //  });
 //  /////////////////////////////////////////////////////
-  it("retrieves 1 transaction from a wallet", async function () {
+  it("retrieves transactions from a wallet", async function () {
     const transactions = await ledger.retrieveTransactions({
       account: TRUST_ACCOUNT,
       wallet: TEST_WALLET
