@@ -29,14 +29,14 @@ class Ledger {
     var counter = 1;
 
     while(flag) {
-      ub = counter * 1000;
-      lb = ub - 1000;
+      ub = counter * 500;
+      lb = ub - 500;
       var output = await this.eos.getTableRows({
             code: this.LEDGER_ACCOUNT_NAME,
             scope: this.LEDGER_ACCOUNT_NAME,
             table: 'entry',
             json: true,
-            limit: 1000,
+            limit: 500,
             upper_bound: ub,
             lower_bound: lb
           });
@@ -124,15 +124,15 @@ class Ledger {
     var flag = true;
     var counter = 1;
     while(flag) {
-      ub = counter * 1000;
-      lb = ub - 1000;
+      ub = counter * 500;
+      lb = ub - 500;
 
       var output = await this.eos.getTableRows({
         code: this.LEDGER_ACCOUNT_NAME,
         scope: this.LEDGER_ACCOUNT_NAME,
         table: 'entry',
         json: true,
-        limit: 1000,
+        limit: 500,
         upper_bound: ub,
         lower_bound: lb
       });
