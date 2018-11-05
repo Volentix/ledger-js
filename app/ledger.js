@@ -8,7 +8,7 @@ const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 class Ledger {
   constructor(config) {
 
-    this.LEDGER_ACCOUNT_NAME = "112vtxledger";
+    this.LEDGER_ACCOUNT_NAME = "vltxtgevtxtr";
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(
