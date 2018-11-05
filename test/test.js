@@ -10,6 +10,7 @@ describe("Ledger JS", function () {
 
   const DISTRIBUTION_ACCOUNT = "vtxdistrib";
   const TRUST_ACCOUNT = "vtxtrust";
+  const LEDGER_ACCOUNT = process.env.LEDGER_ACCOUNT_NAME;
 
  // const TEST_WALLET = "EOS6EcERTUvtafcLMtrKycWF4JX5tFHnD7d9TPfyF1pdh6tgiWPpd";
   const TEST_WALLET = "EOS81gkcgHo6Q12m8tjd2Ye5m18zbr4wGWh2bqU3XuLYrburgEf2T";
@@ -24,7 +25,7 @@ describe("Ledger JS", function () {
       keyProvider: process.env.KEY_PROVIDER
     };
 
-    ledger = new VtxLedger(config, "vltxtgevtxtr");
+    ledger = new VtxLedger(config, LEDGER_ACCOUNT);
 
   });
 
