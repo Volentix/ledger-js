@@ -28,7 +28,7 @@ class Ledger {
     var flag = true;
     var counter = 1;
 
-    while(flag) {
+   // while(flag) {
       ub = counter * 500;
       lb = ub - 500;
       var output = await this.eos.getTableRows({
@@ -63,7 +63,7 @@ class Ledger {
         }
       }
       counter++;
-    }
+    //}
     return {
       amount,
       currency: "VTX"
