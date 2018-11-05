@@ -24,7 +24,7 @@ describe("Ledger JS", function () {
       keyProvider: process.env.KEY_PROVIDER
     };
 
-    ledger = new VtxLedger(config);
+    ledger = new VtxLedger(config, "112vtxledger");
 
   });
 

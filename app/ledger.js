@@ -6,9 +6,8 @@ const uuid = require("uuid");
 const BOILERPLATE_ASSERTION_TEXT = "assertion failure with message: ";
 
 class Ledger {
-  constructor(config) {
-
-    this.LEDGER_ACCOUNT_NAME = "vltxtgevtxtr";
+  constructor(config, accountName) {
+    this.LEDGER_ACCOUNT_NAME = accountName;
     this.TREASURY_ACCOUNT_NAME = "vtxtreasury";
 
     this.eos = Eos(

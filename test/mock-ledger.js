@@ -2,7 +2,7 @@ const uuidv4 = require("uuid/v4");
 const moment = require("moment");
 
 class Ledger {
-  constructor(config) {
+  constructor(config, accountName) {
   }
 
   async retrieveBalance({ account, key }) {
