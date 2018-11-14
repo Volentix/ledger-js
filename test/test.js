@@ -93,6 +93,7 @@ describe("Ledger JS", function () {
       wallet: TEST_WALLET
     });
     console.log("Transactions:", transactions.transactions.length);
+    console.log(transactions)
     //  expect(transactions)
     //    .to.have.property("output1")
     //    .which.is.an("array")

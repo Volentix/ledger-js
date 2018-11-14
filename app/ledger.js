@@ -49,16 +49,16 @@ class Ledger {
         }
         if (wallet === "") {
           if (output.rows[i].fromAccount.localeCompare(account) == 0) {
-            amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+            amount += output.rows[i].amount
           }
 	        if (output.rows[i].toAccount.localeCompare(account) == 0) {
-	          amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+	          amount += output.rows[i].amount
 	        }
         }
         else  {
           if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
 
-            amount += (output.rows[i].iVal + output.rows[i].fVal / 100000);
+            amount += output.rows[i].amount
           }
         }
       }
@@ -154,9 +154,9 @@ class Ledger {
           if (output.rows[i].sToKey.localeCompare(wallet) == 0) {
             transactions.push(output.rows[i]);
           }
-          if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
-            transactions.push(output.rows[i]);
-          }
+          // if (output.rows[i].fromKey.localeCompare(wallet) == 0) {
+          //   transactions.push(output.rows[i]);
+          // }
         }
       }
       transactions.splice(0, Object.keys(transactions).length - limit);
